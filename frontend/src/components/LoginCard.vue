@@ -21,10 +21,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus';
+import axios from "axios";
+import qs from "qs"
+
 const username = ref('')
 const password = ref('')
+const form = {
+  user_id: "",
+  user_password: "",
+}
 const login = () => {
-  // 此处需要连接后端进一步校验
   if (username.value == '') {
     ElMessage.error('请输入正确的用户名')
     username.value = ''
@@ -35,8 +41,20 @@ const login = () => {
     username.value = ''
     password.value = ''
     return
+  } else {
+    axios
+        .post("/user/login", qs.stringify(form))
+        .then((res) => {
+          if (res.data.errno === 0) {
+            ElMessage.success('欢迎您,' + username.value)
+          } else {
+            ElMessage.error('账号或密码错误')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
   }
-  ElMessage.success('欢迎您,' + username.value)
 }
 </script>
 
