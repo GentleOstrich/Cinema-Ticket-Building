@@ -1,19 +1,8 @@
-<script setup lang="ts">
-import Home from '../components/Home.vue'
-</script>
-
-<template>
-  <div id="home"><Home /></div>
+<template id="home">
+  <div>
+    <h1>This is Home🏠</h1>
+  </div>
+  <div>
+    <router-link to="/">Welcome</router-link>
+  </div>
 </template>
-
-
-<style>
-#home {
-  background:url("../assets/980.jpg");
-width:100%;			
-height:100%;		
-position:fixed;
-background-size:100% 100%;
-background-repeat: no-repeat;
-}
-</style>
