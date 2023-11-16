@@ -1,4 +1,4 @@
-<template>
+<template id="home">
   <div>
     <h1>This is Home🏠</h1>
   </div>
