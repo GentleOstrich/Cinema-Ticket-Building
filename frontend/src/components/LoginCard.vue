@@ -1,15 +1,14 @@
 <template>
-    <el-card class="box-card" >
+    <el-card class="box-card">
     <template #header>
       <div class="card-header" style="margin-top: 30px;">
         <span style="margin-left: 30px; font-size: 0.65cm;"><strong>请登录</strong></span>
-        <el-button class="button" text style="font-size: 0.34cm; background-color: white"
-        @click="">
+        <el-button class="button" text style="font-size: 0.34cm; background-color: white">
         <!-- 此处需要进行向注册页面的跳转 -->
-        没有账户？点此注册！</el-button>
+        没有账户？快来注册！</el-button>
 
       </div>
-      <el-input v-model="idNum" placeholder="请输入账号" style="padding: 20px 30px 5px 30px;"/>
+      <el-input v-model="username" placeholder="请输入用户名" style="padding: 20px 30px 5px 30px;"/>
       <el-input
       v-model="password"
       type="password"
@@ -28,17 +27,27 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus';
-const idNum = ref('')
+const username = ref('')
 const password = ref('')
 const login = () => {
   // 此处需要连接后端进一步校验
-  if (idNum.value == '') {
-    ElMessage.error('请输入正确的账号')
+  if (username.value == '') {
+    ElMessage.error('请输入正确的用户名')
+    username.value = ''
+    password.value = ''
+    return
   } else if (password.value == '') {
     ElMessage.error('请输入正确的密码')
+    username.value = ''
+    password.value = ''
+    return
   }
+  ElMessage.success('欢迎您,'+username.value)
+
 }
 </script>
+
+
 <style>
 .box-card {
   width: 30%;

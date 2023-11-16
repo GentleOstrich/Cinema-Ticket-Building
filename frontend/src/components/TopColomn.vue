@@ -1,5 +1,5 @@
 <template>
-  <div class="h-6" />
+  <div class="h-6"/>
   <el-menu
     :default-active="activeIndex"
     class="el-menu-demo"
@@ -10,10 +10,11 @@
     @select="handleSelect"
   >
     <el-menu-item index="1">
-      <router-link to="/" style="text-decoration: none;">登录</router-link>
+      <router-link to="/" style="text-decoration: none;"  v-loading.fullscreen.lock="fullscreenLoading" type="primary"
+       @click="openFullScreen1" element-loading-text="正在加载中，请稍后">主页</router-link>
     </el-menu-item>
     <el-menu-item index="2">电影列表</el-menu-item>
-    <div class="flex-grow" />
+    <div class="flex-grow"/>
     <el-sub-menu index="3">
       <template #title>Workspace</template>
       <el-menu-item index="3-1">
@@ -33,6 +34,13 @@ import { ref } from 'vue'
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+}
+const fullscreenLoading = ref(false)
+const openFullScreen1 = () => {
+  fullscreenLoading.value = true
+  setTimeout(() => {
+    fullscreenLoading.value = false
+  }, 700)
 }
 </script>
 

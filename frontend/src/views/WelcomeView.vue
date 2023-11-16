@@ -1,6 +1,5 @@
 <template>
   <div id="welcomePage">
-    
     <TopColumn></TopColumn>
     <!-- 一些介绍 -->
     <div id="loginCard"><LoginCard></LoginCard></div>
@@ -14,6 +13,7 @@
 import TopColumn from '../components/TopColomn.vue';
 import LoginCard from '../components/loginCard.vue';
 import BottomScoring from '../components/BottomScoring.vue';
+
 </script>
 
 
@@ -23,11 +23,8 @@ import BottomScoring from '../components/BottomScoring.vue';
   width:100%;
   height:100%;
   position:center;
-  background-size:100% ;
+  background-size:100% auto;
   background-repeat: no-repeat;
   }
 
-  #loginCard {
-    
-  }
 </style>

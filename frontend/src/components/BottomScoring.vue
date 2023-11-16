@@ -2,7 +2,7 @@
     <strong style="margin: 0 0 0 20px">对我们的网站满意？请给我们好评！👉&nbsp;&nbsp;&nbsp;</strong>
     <el-rate
     v-model="value"
-    :texts="['太差劲了😫', '还需努力😔', '一般般😐', '不错😀', '非常棒😊']"
+    :texts="['太差了😫', '还需努力😔', '一般般😐', '不错😀', '非常棒😊']"
     show-text
     @click="scoring"
     />
