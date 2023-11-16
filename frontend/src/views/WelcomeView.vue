@@ -9,13 +9,11 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import TopColumn from '../components/TopColomn.vue';
 import LoginCard from '../components/LoginCard.vue';
 import BottomScoring from '../components/BottomScoring.vue';
 </script>
-
 
 <style>
 #welcomePage {

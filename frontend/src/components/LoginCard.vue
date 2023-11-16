@@ -23,7 +23,6 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus';
 import axios from "axios";
 import qs from "qs"
-
 const username = ref('')
 const password = ref('')
 const form = {
@@ -57,7 +56,6 @@ const login = () => {
   }
 }
 </script>
-
 
 <style>
 .box-card {

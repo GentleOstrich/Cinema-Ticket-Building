@@ -14,4 +14,3 @@ const scoring = () => {
 }
 const value = ref('')
 </script>
-
