@@ -7,13 +7,13 @@ from django.contrib.auth import authenticate, login
 @csrf_exempt    # 跨域设置
 def login(request):  # 继承请求类
     if request.method == 'POST':  # 判断请求方式是否为 POST
-        user_id = request.POST.get('user_id')  # 获取请求体中的请求数据
-        user_password = request.POST.get('user_password')
-        user = authenticate(request, user_id=user_id, user_password=user_password)
+        username = request.POST.get('username')  # 获取请求体中的请求数据
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             return JsonResponse({'errno': 0, 'msg': "Login Success"})
         else:
-            return JsonResponse({'errno': 1, 'msg': "wrong Id or Password"})
+            return JsonResponse({'errno': 1, 'msg': "wrong Name or Password"})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 

@@ -8,51 +8,51 @@
           没有账户？快来注册！</el-button>
 
       </div>
-      <el-input v-model="username" placeholder="请输入用户名" style="padding: 20px 30px 5px 30px;" />
-      <el-input v-model="password" type="password" placeholder="请输入密码" show-password
+      <el-input v-model.lazy="form.username" placeholder="请输入用户名" style="padding: 20px 30px 5px 30px;" />
+      <el-input v-model.lazy="form.password" type="password" placeholder="请输入密码" show-password
         style="padding: 20px 30px 5px 30px;" />
     </template>
-    <div style="text-align: right; margin: 5px 30px 5px 0"><el-button type="success" @click="login" :plain="true">
+    <div style="text-align: right; margin: 5px 30px 5px 0">
+      <el-button type="success" @click="login" :plain="true">
         <!-- 此处需要进行向用户主页的跳转 -->
-        登录</el-button></div>
+        登录</el-button>
+    </div>
   </el-card>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus';
-import axios from "axios";
+import { ElMessage } from 'element-plus'
+import axios from "axios"
 import qs from "qs"
-const username = ref('')
-const password = ref('')
 const form = {
-  user_id: "",
-  user_password: "",
+  username: "",
+  password: "",
 }
 const login = () => {
-  if (username.value == '') {
+  if (form.username == '') {
     ElMessage.error('请输入正确的用户名')
-    username.value = ''
-    password.value = ''
+    form.username = ''
+    form.password = ''
     return
-  } else if (password.value == '') {
+  } else if (form.password == '') {
     ElMessage.error('请输入正确的密码')
-    username.value = ''
-    password.value = ''
+    form.username = ''
+    form.password = ''
     return
   } else {
     axios
-        .post("/user/login", qs.stringify(form))
-        .then((res) => {
-          if (res.data.errno === 0) {
-            ElMessage.success('欢迎您,' + username.value)
-          } else {
-            ElMessage.error('账号或密码错误')
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      .post("/user/login", qs.stringify(form))
+      .then((res) => {
+        if (res.data.errno === 0) {
+          ElMessage.success('欢迎您,' + form.username)
+        } else {
+          ElMessage.error('账号或密码错误')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>
