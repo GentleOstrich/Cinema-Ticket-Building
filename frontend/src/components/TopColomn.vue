@@ -7,9 +7,8 @@
           @click="openFullScreen1" element-loading-text="正在加载中，请稍后">主页</router-link>
       </el-menu-item>
       <el-menu-item index="2">电影列表</el-menu-item>
-      <div class="flex-grow" />
       <el-sub-menu index="3">
-        <template #title>Workspace</template>
+        <template #title>更多</template>
         <el-menu-item index="3-1">
           <router-link to="/home" style="text-decoration: none; color: inherit;">个人主页</router-link>
         </el-menu-item>
