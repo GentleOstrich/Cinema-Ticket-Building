@@ -29,27 +29,27 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from "axios"
 import qs from "qs"
-const form = {
+const form = ref({
   username: "",
   password: "",
-}
+})
 const login = () => {
-  if (form.username == '') {
+  if (form.value.username == '') {
     ElMessage.error('请输入正确的用户名')
-    form.username = ''
-    form.password = ''
+    form.value.username = ''
+    form.value.password = ''
     return
-  } else if (form.password == '') {
+  } else if (form.value.password == '') {
     ElMessage.error('请输入正确的密码')
-    form.username = ''
-    form.password = ''
+    form.value.username = ''
+    form.value.password = ''
     return
   } else {
     axios
-      .post("/user/login", qs.stringify(form))
+      .post("/user/login/", qs.stringify(form))
       .then((res) => {
         if (res.data.errno === 0) {
-          ElMessage.success('欢迎您,' + form.username)
+          ElMessage.success('欢迎您,' + form.value.username)
         } else {
           ElMessage.error('账号或密码错误')
         }

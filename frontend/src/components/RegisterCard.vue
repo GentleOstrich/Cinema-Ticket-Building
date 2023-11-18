@@ -29,42 +29,53 @@ import type { Action } from 'element-plus'
 import { ref } from 'vue'
 import axios from "axios"
 import qs from "qs"
-const form = {
+const form = ref({
     username: "",
     password: "",
-}
+})
 const register = () => {
     // 这里需要保证username不重复,并且校验用户名是否合法
-    if (form.username.length < 2 || form.username.length > 8) {
+    if (form.value.username.length < 2 || form.value.username.length > 8) {
         ElMessage.error('请输入符合要求的用户名')
-        form.username = ''
-        form.password = ''
+        form.value.username = ''
+        form.value.password = ''
         return
-    } else if (form.password.length < 6) {
+    } else if (form.value.password.length < 6) {
         ElMessage.error('请输入符合要求的密码')
-        form.username = ''
-        form.password = ''
+        form.value.username = ''
+        form.value.password = ''
         return
     } else {
-        form.username = ''
-        form.password = ''
-        ElMessageBox.alert(
-        '<strong>恭喜您，注册成功！</strong>',
-        '系统提示：',
-        {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: '确定',
-            draggable: true,
-            callback: (action: Action) => {
-                ElNotification({
-                    title: 'Success',
-                    message: 'This is a success message',
-                    type: 'success',
-                    duration: 4500
-                })
-            },
-        }
-         )
+        axios
+        .post("/user/create/", qs.stringify(form))
+        .then((res) => {
+            if (res.data.errno === 0) {
+                ElMessageBox.alert(
+                '<strong>恭喜您，注册成功！</strong>',
+                '系统提示：',
+                {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '确定',
+                    draggable: true,
+                    callback: (action: Action) => {
+                        ElNotification({
+                            title: 'Success',
+                            message: 'This is a success message',
+                            type: 'success',
+                            duration: 4500
+                        })
+                    },
+                }
+                )
+            } else {
+            ElMessage.error('账号或密码错误')
+            }
+            form.value.username = ''
+            form.value.password = ''
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
 }
 </script>
