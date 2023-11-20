@@ -7,7 +7,7 @@
             <div class="card-header" style="margin-top: 30px;">
                 <span style="margin-left: 30px; font-size: 0.65cm;"><strong>请注册</strong></span>
                 <el-button class="button" text style="font-size: 0.34cm; background-color: white">
-                    <router-link to="/" style="text-decoration: none; color: green;">已有账户？快来登录！</router-link></el-button>
+                    <router-link to="/login" style="text-decoration: none; color: green;">已有账户？快来登录！</router-link></el-button>
             </div>
             <el-input v-model.lazy="form.username" placeholder="请输入2~8个字的用户名（支持字母与汉字）" style="padding: 20px 30px 5px 30px;" />
             <el-input v-model.lazy="form.password" type="password" placeholder="请输入6~16位的密码（不支持汉字）" show-password
