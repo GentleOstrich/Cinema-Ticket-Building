@@ -4,7 +4,7 @@
 2023数据库大作业
 
 #### 软件架构
-软件架构说明
+vue + django
 
 
 #### 安装教程
@@ -15,9 +15,10 @@
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  安装requirements里运行需要的安装包 及 python版本
+2.  进入 frontend 目录 命令行执行 npm install  npm run build 对vue前端进行打包
+3.  根目录命令行执行 python manage.py runserver
+4.  浏览器进入 http://127.0.0.1:8000/ 
 
 #### 参与贡献
 
