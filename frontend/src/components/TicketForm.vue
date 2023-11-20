@@ -22,6 +22,7 @@
     <el-button class="mt-4" style="width: 100%" @click="onAddItem"
       >Add Item</el-button
     >
+    TODO: 按照订票系统的要求更改表格内容
   </template>
   
   <script lang="ts" setup>

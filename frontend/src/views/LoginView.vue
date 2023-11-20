@@ -1,6 +1,7 @@
 <template>
     <div id="loginPage" style="margin-bottom:0 ;">
-      <TopColumn></TopColumn>
+      <!-- <TopColumn></TopColumn> -->
+      <div style="margin-left: -10000px;">&nbsp;</div>
       <div id="loginCard">
         <LoginCard></LoginCard>
       </div>

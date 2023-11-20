@@ -14,7 +14,7 @@
                 style="padding: 20px 30px 5px 30px;" />
         </template>
         <div style="text-align: right; margin: 5px 30px 5px 0">
-            <el-button type="success" @click="register" :plain="true">
+            <el-button type="success" @click="register" style="margin-left: 240px;">
                 <!-- 此处需要进行向用户主页的跳转 -->
                 注册</el-button>
         </div>

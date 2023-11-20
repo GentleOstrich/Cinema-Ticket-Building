@@ -1,18 +1,39 @@
 <template>
-    <el-menu default-active="none" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" style="min-height: 100vh;">
+    <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" style="min-height: 100vh;">
         <el-menu-item index="1">
             <el-icon><icon-menu /></el-icon>
-            <span>个人信息</span>
+            <span><router-link to="/home/userinfo" 
+                style="text-decoration: none; 
+                color: inherit; 
+                padding-right: 99px; 
+                padding-top: 25px; 
+                padding-bottom: 10px;">
+                    个人信息
+                </router-link>
+            </span>
         </el-menu-item>
         <el-menu-item index="2">
             <el-icon><Star /></el-icon>
-            <span><router-link to="/home/userticket" style="text-decoration: none; color: inherit;">我的影票</router-link></span>
+            <span><router-link to="/home/userticket" 
+                style="text-decoration: none; 
+                color: inherit; 
+                padding-right: 99px; 
+                padding-top: 25px; 
+                padding-bottom: 10px;">
+                我的影票</router-link>
+            </span>
         </el-menu-item>
         <el-menu-item index="3">
-            <el-icon>
-                <setting />
-            </el-icon>
-            <span>设置</span>
+            <el-icon><setting /></el-icon>
+            <span><router-link to="/home/settings" 
+                style="text-decoration: none; 
+                color: inherit;
+                padding-right: 119px; 
+                padding-top: 25px; 
+                padding-bottom: 10px;">
+                    设置
+                </router-link>
+            </span>
         </el-menu-item>
     </el-menu>
 </template>

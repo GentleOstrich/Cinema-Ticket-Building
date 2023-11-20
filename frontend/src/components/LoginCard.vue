@@ -17,7 +17,9 @@
         style="padding: 20px 30px 5px 30px;" />
     </template>
     <div style="text-align: right; margin: 5px 30px 5px 0">
-      <el-button type="success" @click="login" :plain="true">
+      <router-link to="/"><el-button type="danger" >
+        返回</el-button></router-link>
+        <el-button type="success" @click="login" style="margin-left: 240px;">
         <!-- 此处需要进行向用户主页的跳转 -->
         登录</el-button>
     </div>
@@ -34,12 +36,12 @@ const form = ref({
   password: "",
 })
 const login = () => {
-  if (form.value.username == '') {
+  if (form.value.username.length > 8 || form.value.username.length < 2) {
     ElMessage.error('请输入正确的用户名')
     form.value.username = ''
     form.value.password = ''
     return
-  } else if (form.value.password == '') {
+  } else if (form.value.password.length < 6) {
     ElMessage.error('请输入正确的密码')
     form.value.username = ''
     form.value.password = ''
