@@ -5,7 +5,9 @@
       <el-menu-item index="1">
         <router-link to="/" style="text-decoration: none;">欢迎页</router-link>
       </el-menu-item>
-      <el-menu-item index="2">电影列表</el-menu-item>
+      <el-menu-item index="2">
+        <router-link to="/movies/index" style="text-decoration: none;">电影列表</router-link>
+      </el-menu-item>
       <el-sub-menu index="3" :default-active="activeIndex">
         <template #title>更多</template>
         <el-menu-item index="3-1">

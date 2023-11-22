@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
-
+import TopColomn from "../components/TopColomn.vue";
+import SearchSection from "../components/SearchSection.vue";
 const getList = () => {
   axios
       .get("/movie/index/")
@@ -14,6 +15,7 @@ const getList = () => {
 </script>
 
 <template>
-  <div>this is movie list</div>
-  <button @click="getList">get</button>
+  <TopColomn></TopColomn>
+  <SearchSection></SearchSection>
+  <router-view/>
 </template>

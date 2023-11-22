@@ -13,7 +13,6 @@
 </template>
   
   <script lang="ts" setup>
-  import TopColumn from '../components/TopColomn.vue';
   import LoginCard from '../components/LoginCard.vue';
   </script>
   
