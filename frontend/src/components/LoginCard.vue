@@ -9,7 +9,7 @@
     <template #header>
       <div class="card-header" style="margin-top: 30px;">
         <span style="margin-left: 30px; font-size: 0.65cm;"><strong>请登录</strong></span>
-        <el-button class="button" text style="font-size: 0.34cm; background-color: ">
+        <el-button class="button" text style="font-size: 0.34cm; background-color:">
           <router-link to="/register" style="text-decoration: none; color: red;" >没有账户？快来注册！</router-link></el-button>
       </div>
       <el-input v-model.lazy="form.username" placeholder="请输入用户名" style="padding: 20px 30px 5px 30px;" />
@@ -59,6 +59,7 @@ const login = () => {
       .catch((error) => {
         console.log(error)
       })
+
   }
 }
 </script>
