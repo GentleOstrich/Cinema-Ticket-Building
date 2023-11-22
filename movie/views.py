@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from . import models
 
 
@@ -9,5 +10,5 @@ from . import models
 def index(request):
     if request.method == 'GET':
         movies = models.Movie.objects.all()
-        print(list(movies))
-        return JsonResponse({'errno': 0, 'data': {'movies': list(movies)}})
+        json_data = serializers.serialize('json', movies)
+        return JsonResponse({'errno': 0, 'data': json_data})
