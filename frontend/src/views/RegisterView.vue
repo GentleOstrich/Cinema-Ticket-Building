@@ -21,7 +21,7 @@ import RegisterCard from '../components/RegisterCard.vue';
   
 <style>
 #registerPage {
-    background: url("../assets/亚托莉1.png");
+    background: url("../assets/cat_girl.jpg");
     height: 100vh;
     width: 100vw;
     background-size: cover;

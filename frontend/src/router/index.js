@@ -7,6 +7,7 @@ import AboutView from '../views/AboutView.vue'
 import Userinfo from '../components/UserInformation.vue'
 import TicketForm from '../components/TicketForm.vue'
 import Settings from '../components/SettingInformation.vue'
+import MovieListView from "@/views/MainView.vue";
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/movielist',
+      name: 'movielist',
+      component: MovieListView
     },
     {
       path: '/home',
