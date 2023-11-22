@@ -14,3 +14,5 @@ def index(request):
         str_data = serializers.serialize('json', movies)
         json_data = json.loads(str_data)
         return JsonResponse({'errno': 0, 'data': json_data})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 # from models import User  # 引入数据库 User 对象
 
@@ -10,8 +11,17 @@ def login(request):  # 继承请求类
     if request.method == 'POST':
         username = request.POST.get('_value[username]') 
         password = request.POST.get('_value[password]')
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
+        remember = None
+        user = auth.authenticate(request,username=username, password=password)
+        if user and user.is_active:
+            auth.login(request,user)
+            # if remember:
+            #     # 设置为None，则表示使用全局的过期时间
+            #     request.session.set_expiry(None)
+            # else:
+            #     #否则设为0，关掉浏览器就注销登陆状态了
+            #     request.session.set_expiry(0)
+            print(request.user)
             return JsonResponse({'errno': 0, 'msg': "Login Success"})
         else:
             return JsonResponse({'errno': 1, 'msg': "wrong Name or Password"})
@@ -24,8 +34,20 @@ def create(request):
     if request.method == 'POST':
         username = request.POST.get('_value[username]')
         password = request.POST.get('_value[password]')
-        user = User.objects.create_user(username=username, password=password)
-        user.save()
-        return JsonResponse({'errno': 0, 'msg': "Create Success"})
+        user = User.objects.filter(username=username)
+        if user.exists():
+            return JsonResponse({'errno': 1, 'msg': 'Repeated username'})
+        else:
+            user = User.objects.create_user(username=username, password=password)
+            user.save()
+            return JsonResponse({'errno': 0, 'msg': "Create Success"})            
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt
+def is_login(request):
+    if request.method == 'GET':
+        return JsonResponse({'code':0})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+

@@ -50,6 +50,7 @@ const login = () => {
     axios
       .post("/user/login/", qs.stringify(form))
       .then((res) => {
+        console.log(res)
         if (res.data.errno === 0) {
           ElMessage.success('欢迎您,' + form.value.username)
         } else {

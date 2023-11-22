@@ -1,6 +1,4 @@
 <template>
-
-   
     <el-card class="box-card" shadow="hover"
         style="width: 30%;  margin-bottom: 10%;  margin-top: 100px;  opacity: 0.7;  margin-left: 250px;" >
         <template #header>
@@ -69,7 +67,7 @@ const register = () => {
                     },
                 }
                 )
-                route.push('./login')
+                route.push('./login/')
             } else {
             ElMessage.error('账号或密码错误')
             }
