@@ -27,12 +27,14 @@ import { ElNotification } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Action } from 'element-plus'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from "axios"
 import qs from "qs"
 const form = ref({
     username: "",
     password: "",
 })
+const route = useRouter()
 const register = () => {
     // 这里需要保证username不重复,并且校验用户名是否合法
     if (form.value.username.length < 2 || form.value.username.length > 8) {
@@ -67,6 +69,7 @@ const register = () => {
                     },
                 }
                 )
+                route.push('./login')
             } else {
             ElMessage.error('账号或密码错误')
             }
