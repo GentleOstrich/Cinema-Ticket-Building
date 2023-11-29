@@ -29,12 +29,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 import axios from "axios"
 import qs from "qs"
 const form = ref({
   username: "",
   password: "",
 })
+const route = useRouter()
 const login = () => {
   if (form.value.username.length > 8 || form.value.username.length < 2) {
     ElMessage.error('请输入正确的用户名')
@@ -53,6 +55,7 @@ const login = () => {
         console.log(res)
         if (res.data.errno === 0) {
           ElMessage.success('欢迎您,' + form.value.username)
+          route.push('/movies/index')
         } else {
           ElMessage.error('账号或密码错误')
         }

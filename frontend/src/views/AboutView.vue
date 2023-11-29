@@ -1,6 +1,7 @@
 <template>
     <TopColomn></TopColomn>
-    <BottomScoring></BottomScoring>
+    <img src="../assets/苍老师滑稽.jpg" alt="" style="height:651px;">
+    <!-- <BottomScoring></BottomScoring> -->
 </template>
 
 <script lang="ts" setup>

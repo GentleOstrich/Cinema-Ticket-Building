@@ -2,7 +2,7 @@
     <div id="registerPage">
         <div style="
         text-align: center; 
-        padding-top: 30px; 
+        padding-top: 20px; 
         font-size: 1cm; 
         color: #000000; 
         font-family: 'Lucida Calligraphy', cursive, serif, sans-serif ;

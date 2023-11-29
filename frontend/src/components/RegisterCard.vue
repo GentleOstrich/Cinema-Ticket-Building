@@ -58,12 +58,7 @@ const register = () => {
                     confirmButtonText: '确定',
                     draggable: true,
                     callback: (action: Action) => {
-                        ElNotification({
-                            title: 'Success',
-                            message: 'This is a success message',
-                            type: 'success',
-                            duration: 4500
-                        })
+                        
                     },
                 }
                 )
