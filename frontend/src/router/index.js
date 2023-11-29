@@ -10,6 +10,7 @@ import Settings from '../components/SettingInformation.vue'
 import MainView from "@/views/MainView.vue";
 import MovieIndex from "../components/MovieIndex.vue"
 import AdminView from '../views/AdminView.vue'
+import AdminReject from '../components/AdminReject.vue'
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,7 +73,14 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
-      component: AdminView
+      component: AdminView,
+      children: [
+        {
+          path: '/admin/error',
+          name: 'admin/error',
+          component: AdminReject
+        }
+      ]
     }
   
   ]

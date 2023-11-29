@@ -8,7 +8,8 @@
         <template #title>更多</template>
         <el-menu-item @click="changeUser">切换账号</el-menu-item>
         <el-menu-item index="/about">关于我们</el-menu-item>
-        <el-menu-item index="/admin">管理员入口</el-menu-item>
+        <!-- 鉴权跳转，如果当前账号为管理员账号即进入管理员页面，否则进入error页面 -->
+        <el-menu-item @click="adminCheck">管理员入口</el-menu-item>
       </el-sub-menu>
       <div class="flex-grow" />
       <el-menu-item @click="returnWelcome">登出</el-menu-item>
@@ -76,7 +77,13 @@ const changeUser = () => {
       
     })
 }
-
+const adminCheck = () => {
+  // 此处需要判断一下当前账号是否为管理员账号
+  if (true)
+  {
+    route.push('/admin/error')
+  }
+}
 </script>
 
 <style>
