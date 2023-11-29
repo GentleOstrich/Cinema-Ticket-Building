@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 import WelcomeView from '../views/WelcomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
@@ -13,77 +13,76 @@ import AdminView from '../views/AdminView.vue'
 import AdminReject from '../components/AdminReject.vue'
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
-  history: createWebHashHistory(),
-  routes: [
-    {
-      path: '/',
-      name: 'welcome',
-      component: WelcomeView
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-    {
-      path: '/movies',
-      name: 'movies',
-      component: MainView,
-      children: [
+    history: createWebHashHistory(),
+    routes: [
         {
-          path: 'index',
-          name: 'index',
-          component: MovieIndex
-        }
-      ]
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: HomeView,
-      children: [
-        {
-          path: 'userticket',
-          name: 'userticket',
-          component: TicketForm
+            path: '/',
+            name: 'welcome',
+            component: WelcomeView
         },
         {
-          path: 'userinfo',
-          name: 'userinfo',
-          component: Userinfo
+            path: '/login',
+            name: 'login',
+            component: LoginView
         },
         {
-          path: 'settings',
-          name: 'settings',
-          component: Settings
-        }
-      ]
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: RegisterView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: AboutView
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: AdminView,
-      children: [
+            path: '/movies',
+            name: 'movies',
+            component: MainView,
+            children: [
+                {
+                    path: 'index',
+                    name: 'index',
+                    component: MovieIndex
+                }
+            ]
+        },
         {
-          path: '/admin/error',
-          name: 'admin/error',
-          component: AdminReject
+            path: '/home',
+            name: 'home',
+            component: HomeView,
+            children: [
+                {
+                    path: 'userticket',
+                    name: 'userticket',
+                    component: TicketForm
+                },
+                {
+                    path: 'userinfo',
+                    name: 'userinfo',
+                    component: Userinfo
+                },
+                {
+                    path: 'settings',
+                    name: 'settings',
+                    component: Settings
+                }
+            ]
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterView
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: AboutView
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: AdminView,
+            children: [
+                {
+                    path: '/admin/error',
+                    name: 'admin/error',
+                    component: AdminReject
+                }
+            ]
         }
-      ]
-    }
-  
-  ]
+
+    ]
 })
 
 export default router

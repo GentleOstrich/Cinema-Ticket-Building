@@ -6,8 +6,10 @@ import json
 from . import models
 
 
+
+
 # Create your views here.
-@csrf_exempt    # 跨域设置
+@csrf_exempt  # 跨域设置
 def index(request):
     if request.method == 'GET':
         movies = models.Movie.objects.all()
@@ -16,3 +18,6 @@ def index(request):
         return JsonResponse({'errno': 0, 'data': json_data})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+
+

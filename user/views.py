@@ -4,17 +4,19 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+
+
 # from models import User  # 引入数据库 User 对象
 
-@csrf_exempt    # 跨域设置
+@csrf_exempt  # 跨域设置
 def login(request):  # 继承请求类
     if request.method == 'POST':
-        username = request.POST.get('_value[username]') 
+        username = request.POST.get('_value[username]')
         password = request.POST.get('_value[password]')
         remember = None
-        user = auth.authenticate(request,username=username, password=password)
+        user = auth.authenticate(request, username=username, password=password)
         if user and user.is_active:
-            auth.login(request,user)
+            auth.login(request, user)
             # if remember:
             #     # 设置为None，则表示使用全局的过期时间
             #     request.session.set_expiry(None)
@@ -40,14 +42,31 @@ def create(request):
         else:
             user = User.objects.create_user(username=username, password=password)
             user.save()
-            return JsonResponse({'errno': 0, 'msg': "Create Success"})            
+            return JsonResponse({'errno': 0, 'msg': "Create Success"})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
 
 @csrf_exempt
 def is_login(request):
     if request.method == 'GET':
-        return JsonResponse({'code':0})
+        return JsonResponse({'code': 0})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
+
+admins = ['zyk', 'lyh', 'gzh']
+
+
+@csrf_exempt  # 跨域设置
+def adminCheck(request):
+    if request.method == 'POST':
+        username = request.POST.get('_value[username]')
+        print(username)
+        for admin in admins:
+            if admin == username:
+                return JsonResponse({'errno': 0, 'msg': "isAdmin"})
+        return JsonResponse({'errno': 1, 'msg': "not admin"})
+
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})

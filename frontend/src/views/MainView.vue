@@ -1,21 +1,27 @@
 <script setup>
-import axios from "axios";
 import TopColomn from "../components/TopColomn.vue";
 import SearchSection from "../components/SearchSection.vue";
-const getList = () => {
-  axios
-      .get("/movie/index/")
-      .then((res) => {
-          console.log(res.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      user: '',
+    }
+  },
+  mounted() {
+    let userName = JSON.parse(sessionStorage.getItem('user'))
+    if (userName) {
+      this.user = userName.username
+    }
+    console.log(this.user)
+  }
 }
 </script>
 
 <template>
-  <TopColomn></TopColomn>
+  <TopColomn :msg="user"></TopColomn>
   <SearchSection></SearchSection>
   <router-view/>
 </template>
