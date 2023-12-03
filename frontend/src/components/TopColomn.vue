@@ -9,12 +9,11 @@
         <template #title>更多</template>
         <el-menu-item @click="changeUser">切换账号</el-menu-item>
         <el-menu-item index="/about">关于我们</el-menu-item>
-        <!-- 鉴权跳转，如果当前账号为管理员账号即进入管理员页面，否则进入error页面 -->
         <el-menu-item @click="adminCheck">管理员入口</el-menu-item>
+        <el-menu-item @click="returnWelcome">登出</el-menu-item>
       </el-sub-menu>
       <div class="flex-grow"/>
-      <el-menu-item @click="returnWelcome">登出</el-menu-item>
-
+      <el-menu-item>您好，{{ props.msg }}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -102,9 +101,9 @@ const adminCheck = () => {
         console.log(res)
         if (res.data.errno === 0) {
           ElMessage.success('欢迎您,尊贵的管理员' + form.value.username)
-          route.push('/admin/error')
+          route.push('/admin/home')
         } else {
-          ElMessage.error('你他妈也不是管理员啊')
+          route.push('/admin/error')
         }
       })
       .catch((error) => {
