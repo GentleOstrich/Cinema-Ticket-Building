@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.contrib.auth.models import User
 
 
@@ -50,9 +50,20 @@ def create(request):
 @csrf_exempt
 def is_login(request):
     if request.method == 'GET':
-        return JsonResponse({'code': 0})
+        if request.user.is_authenticated:
+            return JsonResponse({'code':1})
+        else: 
+            return JsonResponse({'code':0})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt
+def signout(request): # 只能用signout，不可与内置函数logout重名
+    if request.method == 'GET':
+        logout(request)
+        return JsonResponse({'errno':0, 'msg': "Logout Success"})
+    else: 
+        return JsonResponse({'errno':2, 'msg': "Wrong Request"})
 
 
 admins = ['zyk', 'lyh', 'gzh']

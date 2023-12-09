@@ -3,17 +3,28 @@
     <div class="bg">
       <p class="shine">无人做你的光芒?<br/>请自己照亮前方</p>
       <div id="enter">
-        <router-link to="/login" style="text-decoration: none; color: inherit;">
-          <el-button color="none" id="enterbutton" style="font-size: 0.6cm;">进入订票系统</el-button>
-        </router-link>
+        <el-button color="none" id="enterbutton" 
+        style="font-size: 0.6cm;text-decoration: none; color: inherit;" @click="is_login">
+          进入订票系统
+        </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const myHover = () => {
-
+import axios from 'axios';
+import {useRouter} from 'vue-router'
+const route = useRouter()
+const is_login = () => {
+  axios.get('/user/is_login').then(response=>{
+    console.log(response.data.code) // 已登录:code=>1, 未登录:code=>0
+    if(response.data.code == 1) {
+      route.push('/movies/index')
+    } else route.push('/login')
+  }).catch(response=>{
+    console.error(response.data.errno)
+  });
 }
 </script>
 
