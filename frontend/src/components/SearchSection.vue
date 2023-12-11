@@ -45,8 +45,13 @@
   <div v-for="(movie,index) in movies">
     <el-row style=" margin-left: 30px;">
       <el-col :span="24">
-        <div class="grid-content ep-bg-purple"/>
-        {{ movie.fields.name }}
+        <div v-if="checkString(movie) == true" class="grid-content ep-bg-purple">
+          {{ movie.fields.name }}
+        </div>
+
+        <div class="grid-content ep-bg-purple">
+          {{ movie.fields.name }}
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -54,10 +59,9 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {createApp, ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
 import axios from "axios";
-
 const searchInfo = ref('')
 const radio1 = ref('1')
 const radio2 = ref('1')
@@ -65,32 +69,30 @@ const radio3 = ref('1')
 const activeNames = ref([''])
 const handleChange = (val: string[]) => {
   console.log(val)
-
-  update()
 }
 
+const checkString = (movie) => {
+  console.log(radio1.value)
+  if (radio1.value == 1) {
+    return true;
+  } else if (radio1.value == 2) {
+    return false;
+  } else if (radio1.value == 3) {
+    return false;
+  }
+  return true;
+}
 
 let os = []
 let movies = []
 const update = () => {
-
   axios
       .get("/movie/index/")
       .then((res) => {
         if (res.data.errno === 0) {
-          os = res.data.data
-          console.log(radio1.value)
-
+          movies = res.data.data
         }
 
-
-        // movies = this.os.filter(() => {
-        //   if (radio1 === "1") {
-        //     return os
-        //   } else {
-        //     return []
-        //   }
-        // });
       })
       .catch((error) => {
         console.log(error)
