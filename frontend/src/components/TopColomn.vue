@@ -116,14 +116,12 @@ const form = ref({
 
 const adminCheck = () => {
   // 此处需要判断一下当前账号是否为管理员账号
-  form.value.username = props.msg
-  console.log(form.value.username)
   axios
-      .post("/user/adminCheck/", qs.stringify(form))
+      .post("/user/adminCheck/")
       .then((res) => {
         console.log(res)
         if (res.data.errno === 0) {
-          ElMessage.success('欢迎您,管理员' + form.value.username)
+          ElMessage.success('欢迎您,管理员'+res.data.username)
           route.push('/admin/home')
         } else {
           route.push('/admin/error')

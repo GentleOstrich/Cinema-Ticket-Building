@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
+import json
 from django.contrib import auth
 from django.contrib.auth import login,logout
 from django.contrib.auth.models import User
@@ -72,12 +74,36 @@ admins = ['zyk', 'lyh', 'gzh']
 @csrf_exempt  # 跨域设置
 def adminCheck(request):
     if request.method == 'POST':
-        username = request.POST.get('_value[username]')
-        print(username)
+        username = request.user.username
         for admin in admins:
             if admin == username:
-                return JsonResponse({'errno': 0, 'msg': "isAdmin"})
+                return JsonResponse({'errno': 0, 'username': username, 'msg':"isAdmin"})
         return JsonResponse({'errno': 1, 'msg': "not admin"})
 
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def index(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+        str_data = serializers.serialize('json', users)
+        json_data = json.loads(str_data)
+        return JsonResponse({'errno': 0, 'data': json_data})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def delete(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        user = User.objects.filter(username=username)
+        print(username)
+        if user.exists():
+            user.delete()     
+            return JsonResponse({'errno': 0, 'msg': "Delete Success"})
+        else:           
+            return JsonResponse({'errno': 1, 'msg': 'Username not exist'})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})

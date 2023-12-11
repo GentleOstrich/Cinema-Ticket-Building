@@ -1,7 +1,7 @@
 <template>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
-    <el-table-column prop="username" label="用户名" width="500" />
-    <el-table-column prop="password" label="密码" width="500" />
+    <el-table-column prop="fields.username" label="用户名" width="500" />
+    <el-table-column prop="fields.password" label="密码" width="500" />
     <el-table-column fixed="right" label="操作" width="500">
       <template #default="scope">
         <el-button
@@ -19,23 +19,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import {ElMessageBox} from "element-plus";
+import {ElMessage} from 'element-plus'
+import axios from 'axios';
 
-const tableData = ref([
-  {
-    username: 'Tom',
-    password: 'California',
-  },
-  {
-    username: 'Tom',
-    password: 'California',
-  },
-  {
-    username: 'Tom',
-    password: 'California',
-  },
-])
+interface User {
+  fields: {
+    username: string;
+    password: string;
+  };
+}
+
+const tableData = ref<User[]>([]);
+
+// 在组件加载时获取数据
+onMounted(fetchData);
+
+async function fetchData() {
+  try {
+    const response = await axios.get('/user/index');
+    tableData.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
 const deleteRow = (index: number) => {
   ElMessageBox.confirm(
@@ -48,7 +56,21 @@ const deleteRow = (index: number) => {
     }
   )
     .then(() => {
-      tableData.value.splice(index, 1)
+      const username = tableData.value[index].fields.username;
+      axios
+        .post("/user/delete/",{username:username})
+        .then((res) => {
+            console.log(res)
+            if (res.data.errno === 0) {
+              ElMessage.success('删除成功');
+              tableData.value.splice(index, 1);
+            } else {
+              ElMessage.error('删除失败');
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     })
     .catch(() => {
 
