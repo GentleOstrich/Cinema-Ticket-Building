@@ -42,12 +42,21 @@
     </el-collapse>
   </div>
 
+  <div v-for="(movie,index) in movies">
+    <el-row style=" margin-left: 30px;">
+      <el-col :span="24">
+        <div class="grid-content ep-bg-purple"/>
+        {{ movie.fields.name }}
+      </el-col>
+    </el-row>
+  </div>
 
 </template>
 
 <script lang="ts" setup>
 import {ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
+import axios from "axios";
 
 const searchInfo = ref('')
 const radio1 = ref('1')
@@ -56,6 +65,42 @@ const radio3 = ref('1')
 const activeNames = ref([''])
 const handleChange = (val: string[]) => {
   console.log(val)
+
+  update()
 }
+
+
+let os = []
+let movies = []
+const update = () => {
+
+  axios
+      .get("/movie/index/")
+      .then((res) => {
+        if (res.data.errno === 0) {
+          os = res.data.data
+          console.log(radio1.value)
+
+        }
+
+
+        // movies = this.os.filter(() => {
+        //   if (radio1 === "1") {
+        //     return os
+        //   } else {
+        //     return []
+        //   }
+        // });
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+}
+
+const cond = () => {
+
+}
+
+
 </script>
 

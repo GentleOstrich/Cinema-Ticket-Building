@@ -8,7 +8,6 @@ import Userinfo from '../components/UserInformation.vue'
 import TicketForm from '../components/TicketForm.vue'
 import Settings from '../components/SettingInformation.vue'
 import MainView from "@/views/MainView.vue";
-import MovieIndex from "../components/MovieIndex.vue"
 import AdminView from '../views/AdminView.vue'
 import AdminReject from '../components/AdminReject.vue'
 import AdminEnter from "@/components/AdminEnter.vue";
@@ -29,16 +28,9 @@ const router = createRouter({
             component: LoginView
         },
         {
-            path: '/movies',
+            path: '/movies/index',
             name: 'movies',
             component: MainView,
-            children: [
-                {
-                    path: 'index',
-                    name: 'index',
-                    component: MovieIndex
-                }
-            ]
         },
         {
             path: '/home',

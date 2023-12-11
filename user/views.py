@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
 from django.contrib import auth
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 
 
@@ -53,19 +53,20 @@ def create(request):
 def is_login(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            return JsonResponse({'code':1})
-        else: 
-            return JsonResponse({'code':0})
+            return JsonResponse({'code': 1})
+        else:
+            return JsonResponse({'code': 0})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
+
 @csrf_exempt
-def signout(request): # 只能用signout，不可与内置函数logout重名
+def signout(request):  # 只能用signout，不可与内置函数logout重名
     if request.method == 'GET':
         logout(request)
-        return JsonResponse({'errno':0, 'msg': "Logout Success"})
-    else: 
-        return JsonResponse({'errno':2, 'msg': "Wrong Request"})
+        return JsonResponse({'errno': 0, 'msg': "Logout Success"})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
 
 admins = ['zyk', 'lyh', 'gzh']

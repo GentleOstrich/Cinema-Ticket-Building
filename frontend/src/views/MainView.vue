@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       user: '',
+      radio1: ''
     }
   },
   mounted() {
@@ -23,5 +24,4 @@ export default {
 <template>
   <TopColomn :msg="user"></TopColomn>
   <SearchSection></SearchSection>
-  <router-view/>
 </template>
