@@ -1,5 +1,14 @@
 <script setup>
+import {useRouter} from "vue-router";
 
+const route = useRouter();
+const toAdminMovies = () => {
+  route.push('/admin/movies')
+}
+
+const toAdminUsers = () => {
+  route.push('/admin/users')
+}
 </script>
 
 <template>
@@ -10,8 +19,8 @@
       </el-header>
       <el-main style="text-align: center">
         <div style="text-align: center; margin-top: 200px">
-            <el-button id="button" round>修改电影</el-button>
-            <el-button id="button" round>管理用户</el-button>
+          <el-button id="button" round @click="toAdminMovies">管理电影</el-button>
+          <el-button id="button" round @click="toAdminUsers">管理用户</el-button>
         </div>
       </el-main>
     </el-container>

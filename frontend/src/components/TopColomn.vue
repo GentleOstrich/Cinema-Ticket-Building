@@ -13,7 +13,7 @@
         <el-menu-item @click="returnWelcome">登出</el-menu-item>
       </el-sub-menu>
       <div class="flex-grow"/>
-      <el-menu-item>您好，{{ props.msg }}</el-menu-item>
+      <el-menu-item>{{ props.msg }}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -123,7 +123,7 @@ const adminCheck = () => {
       .then((res) => {
         console.log(res)
         if (res.data.errno === 0) {
-          ElMessage.success('欢迎您,尊贵的管理员' + form.value.username)
+          ElMessage.success('欢迎您,管理员' + form.value.username)
           route.push('/admin/home')
         } else {
           route.push('/admin/error')

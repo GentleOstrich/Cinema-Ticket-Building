@@ -11,6 +11,6 @@ import { useRouter } from 'vue-router';
 
 const route = useRouter()
 const goBack = () => {
-  route.push('/movies/index')
+  route.back()
 }
 </script>
