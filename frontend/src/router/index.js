@@ -12,6 +12,7 @@ import AdminReject from '../components/AdminReject.vue'
 import AdminEnter from "@/components/AdminEnter.vue";
 import AdminMovieForm from "@/components/AdminMovieForm.vue";
 import AdminUserForm from "@/components/AdminUserForm.vue";
+import MovieInfoView from "@/views/MovieInfoView.vue";
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -30,6 +31,11 @@ const router = createRouter({
             path: '/movies/index',
             name: 'movies',
             component: MainView,
+        },
+        {
+            path: '/movies/index/movie_info',
+            name: 'movies_info',
+            component: MovieInfoView,
         },
         {
             path: '/home',

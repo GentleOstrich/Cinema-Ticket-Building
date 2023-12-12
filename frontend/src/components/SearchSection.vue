@@ -1,5 +1,5 @@
 <template>
-   <el-backtop :right="100" :bottom="100" />
+  <el-backtop :right="100" :bottom="100"/>
   <el-input
       v-model="searchInfo"
       class="w-50 m-2"
@@ -43,41 +43,26 @@
     </el-collapse>
   </div>
 
-     <!-- 卡片风格 -->
-     <el-row justify="start" :gutter="20" style="margin: 20px">
-      <el-col
+  <!-- 卡片风格 -->
+  <el-row justify="start" :gutter="20" style="margin: 20px">
+    <el-col
         v-for="movie in movies"
         :span="6"
         style="margin-top: 10px"
-      >
-        <div v-if="checkString(movie) == true">
+    >
+      <div v-if="checkString(movie) == true">
+        <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.fields.name}}"
+                     style="text-decoration: none; color: inherit">
           <el-card>
-            {{ movie.fields.name }}
+            <div>
+              {{ movie.fields.name }}
+            </div>
           </el-card>
-        </div>
-      </el-col>
-    </el-row>
+        </router-link>
+      </div>
+    </el-col>
+  </el-row>
 
-
-  <!-- <ul v-for="(movie,index) in movies" style="list-style: none">
-    <li v-if="checkString(movie) == true">
-      <span>{{movie.fields.name}}</span>
-      <el-divider />
-    </li>
-  </ul> -->
-
-<!--  <template v-for="(movie,index) in movies">-->
-<!--    <el-row style=" margin-left: 30px;">-->
-<!--       <div v-if="checkString(movie) == true"  @change="$forceUpdate">-->
-<!--        <el-col :span="24"><div class="grid-content ep-bg-purple" />-->
-<!--          {{ movie.fields.name }}-->
-<!--        </el-col>-->
-
-<!--         </div>-->
-<!--       <el-divider v-if="checkString(movie) == true" />-->
-<!--    </el-row>-->
-
-<!--  </template>-->
 
 </template>
 
