@@ -60,7 +60,8 @@ import {Search} from '@element-plus/icons-vue'
 import {onMounted} from "vue";
 
 import axios from "axios";
-onMounted(async() => update())
+
+onMounted(async () => update())
 const searchInfo = ref('')
 const radio1 = ref('1')
 const radio2 = ref('1')
@@ -73,14 +74,81 @@ const handleChange = (val: string[]) => {
 
 const checkString = (movie) => {
   console.log(radio1.value)
+  let genre = movie.fields.genre.toString()
+  let region = movie.fields.region.toString()
+  let lasting = movie.fields.lasting.toString()
+
+  let r1 = false
+  let r2 = false
+  let r3 = false
   if (radio1.value == 1) {
-    return true;
+    // 全部
+    r1 = true
   } else if (radio1.value == 2) {
-    return false;
+    // 悬疑
+    if (genre.indexOf("悬疑") != -1) {
+      r1 = true;
+    }
   } else if (radio1.value == 3) {
-    return false;
+    // 动作
+    if (genre.indexOf("动作") != -1) {
+      r1 = true;
+    }
+  } else if (radio1.value == 4) {
+    // 爱情
+    if (genre.indexOf("爱情") != -1) {
+      r1 = true;
+    }
   }
-  return true;
+
+  if (radio2.value == 1) {
+    // 全部
+    r2 = true
+  } else if (radio2.value == 2) {
+    // 中国大陆
+    if (region.indexOf("中国大陆") != -1) {
+      r2 = true;
+    }
+  } else if (radio2.value == 3) {
+    // 港台
+    if (region.indexOf("中国香港") != -1 || region.indexOf("中国台湾") != -1) {
+      r2 = true;
+    }
+  } else if (radio2.value == 4) {
+    // 日韩
+    if (region.indexOf("日本") != -1 || region.indexOf("韩国") != -1) {
+      r2 = true;
+    }
+  } else if (radio2.value == 5) {
+    // 欧美
+    if (region.indexOf("美国") != -1 || region.indexOf("法国") != -1 ||
+        region.indexOf("英国") != -1 || region.indexOf("意大利") != -1 ||
+        region.indexOf("澳大利亚") != -1) {
+      r2 = true;
+    }
+  }
+
+  let lasting_num = parseInt(lasting)
+  if (radio3.value == 1) {
+    // 全部
+    r3 = true
+  } else if (radio3.value == 2) {
+    // <60
+    if (lasting_num <= 60) {
+      r3 = true;
+    }
+  } else if (radio3.value == 3) {
+    // 60-120
+    if (lasting_num > 60 && lasting_num <= 120) {
+      r3 = true;
+    }
+  } else if (radio3.value == 4) {
+    // >120
+    if (lasting_num > 120) {
+      r3 = true;
+    }
+  }
+  return r1 && r2 && r3;
 }
 
 let os = []
@@ -97,11 +165,6 @@ const update = () => {
         console.log(error)
       })
 }
-
-const cond = () => {
-
-}
-
 
 </script>
 
