@@ -68,7 +68,6 @@ def update(request,old_name):
         data = {key: request.POST[key] for key in request.POST}
         movie = models.Movie.objects.get(name=old_name)
         if movie is not None:
-            
             image = request.FILES.get('image')
             if image is not None:
                 movie.image = image.read()

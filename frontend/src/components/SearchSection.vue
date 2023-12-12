@@ -42,14 +42,27 @@
     </el-collapse>
   </div>
 
+     <!-- 卡片风格 -->
+     <el-row>
+      <el-col
+        v-for="movie in movies"
+        :span="5"
+        style="margin-bottom: 10px"
+        :offset="1"
+      >
+        <el-card>
+          {{ movie.fields.name }}
+        </el-card>
+      </el-col>
+    </el-row>
 
 
-  <ul v-for="(movie,index) in movies" style="list-style: none">
+  <!-- <ul v-for="(movie,index) in movies" style="list-style: none">
     <li v-if="checkString(movie) == true">
       <span>{{movie.fields.name}}</span>
       <el-divider />
     </li>
-  </ul>
+  </ul> -->
 
 <!--  <template v-for="(movie,index) in movies">-->
 <!--    <el-row style=" margin-left: 30px;">-->
@@ -73,7 +86,29 @@ import {onMounted} from "vue";
 
 import axios from "axios";
 
-onMounted(async () => update())
+interface Movie {
+  fields: {
+    name: string;
+    genre: string;
+    region: string;
+    lasting: string;
+  };
+}
+
+const movies = ref<Movie[]>([]);
+
+onMounted(fetchData);
+
+async function fetchData() {
+  try {
+    const response = await axios.get('/movie/index');
+    movies.value = response.data.data;
+    console.log(movies.value.length);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
 const searchInfo = ref('')
 const radio1 = ref('1')
 const radio2 = ref('1')
@@ -86,9 +121,9 @@ const handleChange = (val: string[]) => {
 
 const checkString = (movie) => {
   console.log(radio1.value)
-  let genre = movie.fields.genre.toString()
-  let region = movie.fields.region.toString()
-  let lasting = movie.fields.lasting.toString()
+  let genre = movie.fields.genre
+  let region = movie.fields.region
+  let lasting = movie.fields.lasting
 
   let r1 = false
   let r2 = false
@@ -161,21 +196,6 @@ const checkString = (movie) => {
     }
   }
   return r1 && r2 && r3;
-}
-
-let os = []
-let movies = []
-const update = () => {
-  axios
-      .get("/movie/index/")
-      .then((res) => {
-        if (res.data.errno === 0) {
-          movies = res.data.data
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
 }
 
 </script>
