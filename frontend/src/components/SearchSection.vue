@@ -45,11 +45,7 @@
   <div v-for="(movie,index) in movies">
     <el-row style=" margin-left: 30px;">
       <el-col :span="24">
-        <div v-if="checkString(movie) == true" class="grid-content ep-bg-purple">
-          {{ movie.fields.name }}
-        </div>
-
-        <div class="grid-content ep-bg-purple">
+        <div v-if="checkString(movie) == true" class="grid-content ep-bg-purple" @change="$forceUpdate">
           {{ movie.fields.name }}
         </div>
       </el-col>
@@ -59,14 +55,18 @@
 </template>
 
 <script lang="ts" setup>
-import {createApp, ref} from 'vue'
+import {createApp, onBeforeMount, ref} from 'vue'
 import {Search} from '@element-plus/icons-vue'
+import {onMounted} from "vue";
+
 import axios from "axios";
+onMounted(async() => update())
 const searchInfo = ref('')
 const radio1 = ref('1')
 const radio2 = ref('1')
 const radio3 = ref('1')
 const activeNames = ref([''])
+
 const handleChange = (val: string[]) => {
   console.log(val)
 }
@@ -92,7 +92,6 @@ const update = () => {
         if (res.data.errno === 0) {
           movies = res.data.data
         }
-
       })
       .catch((error) => {
         console.log(error)
