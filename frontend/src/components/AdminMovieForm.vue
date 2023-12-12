@@ -199,7 +199,7 @@
       </el-input>
     </el-row>
   </div>
-    <el-button @click="setMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
+    <el-button @click="updateMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
   </el-dialog>
   </div>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
@@ -246,53 +246,18 @@ import axios from 'axios';
 const dialogTableVisible = ref(false)
 const dialogTableVisible1 = ref(false)
 
+const curIndex = ref(-1)
+
 const form = ref({
-  name: '',
-  region: '',
-  genre: '',
-  lasting: '',
-  year: '',
-  language: '',
-  description: ''
+  name: null,
+  region: null,
+  genre: null,
+  lasting: null,
+  year: null,
+  language: null,
+  description: null,
+  image:null
 })
-
-const addMovie = () => {
-  axios
-    .post('/movie/create/',form.value)
-    .then((res) => {
-      if (res.data.errno === 0) {
-        ElMessage.success('添加成功');
-        // 假设 res.data.movie 是新添加的电影数据
-        tableData.value.push(res.data.data); // 将新电影添加到 tableData
-        dialogTableVisible.value = false
-      } else {
-        ElMessage.error('添加失败(已有该电影)');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      ElMessage.error('系统错误');
-    });
-}
-
-const setMovie = () => {
-  axios
-    .post('/movie/create/',form.value)
-    .then((res) => {
-      if (res.data.errno === 0) {
-        ElMessage.success('添加成功');
-        // 假设 res.data.movie 是新添加的电影数据
-        tableData.value.push(res.data.data); // 将新电影添加到 tableData
-        dialogTableVisible.value = false
-      } else {
-        ElMessage.error('添加失败(已有该电影)');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      ElMessage.error('系统错误');
-    });
-}
 
 interface Movie {
   fields: {
@@ -304,6 +269,60 @@ interface Movie {
 }
 
 const tableData = ref<Movie[]>([]);
+
+const addMovie = () => {
+  const formData = new FormData();
+  for (const key in form.value) {
+    formData.append(key, form.value[key]);
+  }
+
+  axios
+    .post('/movie/create/',formData)
+    .then((res) => {
+      if (res.data.errno === 0) {
+        ElMessage.success('添加成功');
+        // 假设 res.data.movie 是新添加的电影数据
+        tableData.value.push(res.data); // 将新电影添加到 tableData
+        console.log(res.data);
+        dialogTableVisible.value = false
+      } else {
+        ElMessage.error('添加失败(已有该电影)');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      ElMessage.error('系统错误');
+    });
+}
+
+const updateMovie = () => {
+  const old_name = tableData.value[curIndex.value].fields.name
+  console.log(curIndex.value)
+  console.log(tableData.value[curIndex.value])
+  console.log(old_name)
+  const formData = new FormData();
+  for (const key in form.value) {
+    formData.append(key, form.value[key]);
+  }
+  console.log(`/movie/update/${old_name}`)
+  axios
+    .post(`/movie/update/${old_name}/`,formData)
+    .then((res) => {
+      if (res.data.errno === 0) {
+        ElMessage.success('修改成功');
+        tableData.value.splice(curIndex.value,0,res.data);
+        tableData.value.splice(curIndex.value+1,1); 
+        console.log(tableData);
+        dialogTableVisible1.value = false
+      } else {
+        ElMessage.error('修改失败(找不到电影)');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      ElMessage.error('系统错误');
+    });
+}
 
 // 在组件加载时获取数据
 onMounted(fetchData);
@@ -319,7 +338,7 @@ async function fetchData() {
 
 const updateRow = (index : number) => {
   dialogTableVisible1.value = true
-
+  curIndex.value = index
 }
 
 
