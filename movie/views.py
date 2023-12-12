@@ -19,5 +19,43 @@ def index(request):
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
+@csrf_exempt
+def create(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data.get('name')
+        region = data.get('region')
+        lasting = data.get('lasting')
+        year = data.get('year')
+        language = data.get('language')
+        description = data.get('description')
+        movie = models.Movie.objects.filter(name=name)
+        if movie.exists():
+            return JsonResponse({'errno': 1, 'msg': 'Repeated name'})
+        else:
+            movie = models.Movie.objects.create(name=name, region=region, lasting=lasting, year=year,
+            language=language, description=description)
+            movie.save()
+            json_data = movie.__dict__
+            json_data.pop('_state', None)  # 删除内部状态字段
+            return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Create Success"})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def delete(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data.get('name')
+        movie = models.Movie.objects.filter(name=name)
+        if movie.exists():
+            movie.delete()     
+            return JsonResponse({'errno': 0, 'msg': "Delete Success"})
+        else:           
+            return JsonResponse({'errno': 1, 'msg': 'Username not exist'})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+        
+
 
 
