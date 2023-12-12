@@ -13,7 +13,7 @@
         <el-menu-item @click="returnWelcome">登出</el-menu-item>
       </el-sub-menu>
       <div class="flex-grow"/>
-      <el-menu-item>{{ props.msg }}</el-menu-item>
+      <el-menu-item>{{ username }}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -24,7 +24,7 @@ import {useRouter} from 'vue-router';
 import {Action} from 'element-plus';
 import axios from "axios"
 import qs from "qs";
-import {ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 
 const route = useRouter()
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -41,31 +41,30 @@ const returnWelcome = () => {
         type: 'warning',
         dangerouslyUseHTMLString: true
       }
-  )
-  .then(() => {
-    axios.get('/user/signout').then(response=>{
-      if(response.data.errno == 0){
+  ).then(() => {
+    axios.get('/user/signout').then(response => {
+      if (response.data.errno == 0) {
         ElMessageBox.alert(
-          '<strong style="font-size: 0.5cm">期待与您再次相遇</strong>',
-          '登出成功',
-          {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: '确定',
-            draggable: true,
-            type: 'info',
-            callback: (action: Action) => {
-              route.push('/')
-            },
-          }
+            '<strong style="font-size: 0.5cm">期待与您再次相遇</strong>',
+            '登出成功',
+            {
+              dangerouslyUseHTMLString: true,
+              confirmButtonText: '确定',
+              draggable: true,
+              type: 'info',
+              callback: (action: Action) => {
+                route.push('/')
+              },
+            }
         )
       }
-    }).catch(response=>{
+    }).catch(response => {
       console.error(response.data.errno)
     });
   })
-  .catch(() => {
+      .catch(() => {
 
-  })
+      })
 }
 
 const changeUser = () => {
@@ -78,41 +77,52 @@ const changeUser = () => {
         type: 'warning',
         dangerouslyUseHTMLString: true
       }
-  )
-  .then(() => {
-    axios.get('/user/signout').then(response=>{
-      if(response.data.errno == 0){
+  ).then(() => {
+    axios.get('/user/signout').then(response => {
+      if (response.data.errno == 0) {
         ElMessageBox.alert(
-          '<strong style="font-size: 0.5cm">期待与您再次相遇</strong>',
-          '登出成功',
-          {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: '确定',
-            draggable: true,
-            type: 'info',
-            callback: (action: Action) => {
-              route.push('/login')
-            },
-          }
+            '<strong style="font-size: 0.5cm">期待与您再次相遇</strong>',
+            '登出成功',
+            {
+              dangerouslyUseHTMLString: true,
+              confirmButtonText: '确定',
+              draggable: true,
+              type: 'info',
+              callback: (action: Action) => {
+                route.push('/login')
+              },
+            }
         )
       }
-    }).catch(response=>{
+    }).catch(response => {
       console.error(response.data.errno)
     });
-  })
-  .catch(() => {
+  }).catch(() => {
 
   })
 }
 
-import {defineProps} from 'vue'
-const props = defineProps({
-  msg:String
+
+onMounted(() => {
+  setTimeout(() => askName(), 500)
 })
 
-const form = ref({
-  username: ""
-})
+let username = ref(null)
+
+function askName() {
+  axios
+      .post("/user/askName/")
+      .then((res) => {
+        if (res.data.errno === 0) {
+          username.value = res.data.username
+        } else {
+          username.value = '大傻逼'
+        }
+      }).catch((error) => {
+    console.log(error)
+  })
+}
+
 
 const adminCheck = () => {
   // 此处需要判断一下当前账号是否为管理员账号
@@ -121,17 +131,15 @@ const adminCheck = () => {
       .then((res) => {
         console.log(res)
         if (res.data.errno === 0) {
-          ElMessage.success('欢迎您,管理员'+res.data.username)
+          ElMessage.success('欢迎您,管理员' + res.data.username)
           route.push('/admin/home')
         } else {
           route.push('/admin/error')
         }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+      }).catch((error) => {
+    console.log(error)
+  })
 }
-
 
 
 </script>

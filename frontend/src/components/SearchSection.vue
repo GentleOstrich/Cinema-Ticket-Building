@@ -42,7 +42,7 @@
     </el-collapse>
   </div>
 
-  <div v-for="(movie,index) in movies">
+  <div v-for="movie in movies">
     <el-row style=" margin-left: 30px;">
       <el-col :span="24">
         <div v-if="checkString(movie) == true" class="grid-content ep-bg-purple" @change="$forceUpdate">
@@ -61,19 +61,22 @@ import {onMounted} from "vue";
 
 import axios from "axios";
 
-onMounted(async () => update())
+onMounted(() => {
+  setTimeout(() => update(), 1000)
+})
+
 const searchInfo = ref('')
 const radio1 = ref('1')
 const radio2 = ref('1')
 const radio3 = ref('1')
 const activeNames = ref([''])
 
+
 const handleChange = (val: string[]) => {
   console.log(val)
 }
 
 const checkString = (movie) => {
-  console.log(radio1.value)
   let genre = movie.fields.genre.toString()
   let region = movie.fields.region.toString()
   let lasting = movie.fields.lasting.toString()
@@ -151,8 +154,7 @@ const checkString = (movie) => {
   return r1 && r2 && r3;
 }
 
-let os = []
-let movies = []
+let movies = ref(null)
 const update = () => {
   axios
       .get("/movie/index/")
@@ -164,6 +166,7 @@ const update = () => {
       .catch((error) => {
         console.log(error)
       })
+
 }
 
 </script>

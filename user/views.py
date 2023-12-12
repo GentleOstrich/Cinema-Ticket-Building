@@ -78,11 +78,12 @@ def adminCheck(request):
         username = request.user.username
         for admin in admins:
             if admin == username:
-                return JsonResponse({'errno': 0, 'username': username, 'msg':"isAdmin"})
+                return JsonResponse({'errno': 0, 'username': username, 'msg': "isAdmin"})
         return JsonResponse({'errno': 1, 'msg': "not admin"})
 
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
 
 @csrf_exempt  # 跨域设置
 def index(request):
@@ -94,6 +95,7 @@ def index(request):
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
+
 @csrf_exempt  # 跨域设置
 def delete(request):
     if request.method == 'POST':
@@ -102,9 +104,19 @@ def delete(request):
         user = User.objects.filter(username=username)
         print(username)
         if user.exists():
-            user.delete()     
+            user.delete()
             return JsonResponse({'errno': 0, 'msg': "Delete Success"})
-        else:           
+        else:
             return JsonResponse({'errno': 1, 'msg': 'Username not exist'})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+
+@csrf_exempt  # 跨域设置
+def askName(request):
+    if request.method == 'POST':
+        username = request.user.username
+        return JsonResponse({'errno': 0, 'username': username, 'msg': "success"})
+
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
