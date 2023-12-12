@@ -20,8 +20,7 @@
 
 <script lang="ts" setup>
 import { ref,onMounted } from 'vue'
-import {ElMessageBox} from "element-plus";
-import {ElMessage} from 'element-plus'
+import { ElMessage,ElMessageBox } from "element-plus";
 import axios from 'axios';
 
 interface User {

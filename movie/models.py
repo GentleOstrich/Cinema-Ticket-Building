@@ -5,8 +5,8 @@ from django.db import models
 class Movie(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-    year = models.IntegerField()
+    year = models.CharField(max_length=5)
     region = models.CharField(max_length=50)
     language = models.CharField(max_length=50)
     genre = models.CharField(max_length=50)
-    lasting = models.IntegerField()
+    lasting = models.CharField(max_length=10)

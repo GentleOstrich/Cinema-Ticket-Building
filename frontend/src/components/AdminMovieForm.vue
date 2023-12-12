@@ -1,9 +1,9 @@
 <template>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
-    <el-table-column prop="moviename" label="电影名" width="450" />
-    <el-table-column prop="moviegenre" label="类型" width="250" />
-    <el-table-column prop="movieregion" label="地区" width="200" />
-    <el-table-column prop="movietime" label="时长" width="200" />
+    <el-table-column prop="fields.name" label="电影名" width="450" />
+    <el-table-column prop="fields.genre" label="类型" width="250" />
+    <el-table-column prop="fields.region" label="地区" width="200" />
+    <el-table-column prop="fields.lasting" label="时长" width="200" />
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
@@ -108,7 +108,7 @@
         >详细描述</span
       >
       <el-input
-          v-model="form.describtion"
+          v-model="form.description"
           class="w-50 m-2"
           placeholder="请输入详细描述"
           autosize
@@ -124,23 +124,62 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
-
+import { ref,onMounted } from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
-const dialogTableVisible = ref(false)
-const addMovie = () => {
+import axios from 'axios';
 
+const dialogTableVisible = ref(false)
+
+const form = ref({
+  name: '',
+  region: '',
+  genre: '',
+  lasting: '',
+  year: '',
+  language: '',
+  description: ''
+})
+
+const addMovie = () => {
+  axios
+    .post('/movie/create/',form.value)
+    .then((res) => {
+      if (res.data.errno === 0) {
+        ElMessage.success('添加成功');
+        // 假设 res.data.movie 是新添加的电影数据
+        tableData.value.push(res.data.data); // 将新电影添加到 tableData
+      } else {
+        ElMessage.error('添加失败');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      ElMessage.error('系统错误');
+    });
 }
 
-const tableData = ref([
-  {
-    moviename: '',
-    moviegenre: '',
-    movieregion: '',
-    movielasting: '',
-  },
-])
+interface Movie {
+  fields: {
+    name: string;
+    genre: string;
+    region: string;
+    lasting: string;
+  };
+}
+
+const tableData = ref<Movie[]>([]);
+
+// 在组件加载时获取数据
+onMounted(fetchData);
+
+async function fetchData() {
+  try {
+    const response = await axios.get('/movie/index');
+    tableData.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
 const deleteRow = (index: number) => {
   ElMessageBox.confirm(
@@ -153,24 +192,25 @@ const deleteRow = (index: number) => {
     }
   )
     .then(() => {
-      ElMessage.success('删除成功！')
-      tableData.value.splice(index, 1)
+      const name = tableData.value[index].fields.name;
+      axios
+        .post("/movie/delete/",{name:name})
+        .then((res) => {
+            console.log(res)
+            if (res.data.errno === 0) {
+              ElMessage.success('删除成功');
+              tableData.value.splice(index, 1);
+            } else {
+              ElMessage.error('删除失败');
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     })
     .catch(() => {
 
     })
-
 }
-import { reactive, ref } from 'vue'
-
-const form = reactive({
-  name: '',
-  region: '',
-  genre: '',
-  lasting: '',
-  year: '',
-  language: '',
-  describtion: ''
-})
 </script>
 
