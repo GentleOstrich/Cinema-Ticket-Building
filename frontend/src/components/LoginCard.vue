@@ -61,7 +61,7 @@ const login = () => {
           console.log(res)
           if (res.data.errno === 0) {
             ElMessage.success('欢迎您,' + form.value.username)
-            route.push('/movies/index')
+            route.push(`/movies/index/`)
           } else {
             ElMessage.error('账号或密码错误')
           }
@@ -69,13 +69,6 @@ const login = () => {
         .catch((error) => {
           console.log(error)
         })
-
-    sessionStorage.setItem(
-        'user',
-        JSON.stringify({
-          username: form.value.username,
-        }))
-
   }
 }
 </script>

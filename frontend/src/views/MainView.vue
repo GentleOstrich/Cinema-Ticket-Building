@@ -12,16 +12,14 @@ export default {
     }
   },
   mounted() {
-    let userName = JSON.parse(sessionStorage.getItem('user'))
-    if (userName) {
-      this.user = userName.username
-    }
-    console.log(this.user)
+
   }
 }
 </script>
 
 <template>
-  <TopColomn :msg="user"></TopColomn>
+  <TopColomn></TopColomn>
   <SearchSection></SearchSection>
 </template>
+
+

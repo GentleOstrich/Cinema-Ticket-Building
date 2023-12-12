@@ -9,7 +9,7 @@
           <SideColomn></SideColomn>
         </el-aside>
         <el-main>
-          <router-view/>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -20,3 +20,5 @@
 import TopColomn from '../components/TopColomn.vue';
 import SideColomn from '../components/SideColomn.vue';
 </script>
+
+
