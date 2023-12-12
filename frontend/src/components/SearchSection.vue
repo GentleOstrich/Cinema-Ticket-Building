@@ -42,15 +42,27 @@
     </el-collapse>
   </div>
 
-  <div v-for="(movie,index) in movies">
-    <el-row style=" margin-left: 30px;">
-      <el-col :span="24">
-        <div v-if="checkString(movie) == true" class="grid-content ep-bg-purple" @change="$forceUpdate">
-          {{ movie.fields.name }}
-        </div>
-      </el-col>
-    </el-row>
-  </div>
+
+
+  <ul v-for="(movie,index) in movies" style="list-style: none">
+    <li v-if="checkString(movie) == true">
+      <span>{{movie.fields.name}}</span>
+      <el-divider />
+    </li>
+  </ul>
+
+<!--  <template v-for="(movie,index) in movies">-->
+<!--    <el-row style=" margin-left: 30px;">-->
+<!--       <div v-if="checkString(movie) == true"  @change="$forceUpdate">-->
+<!--        <el-col :span="24"><div class="grid-content ep-bg-purple" />-->
+<!--          {{ movie.fields.name }}-->
+<!--        </el-col>-->
+
+<!--         </div>-->
+<!--       <el-divider v-if="checkString(movie) == true" />-->
+<!--    </el-row>-->
+
+<!--  </template>-->
 
 </template>
 
@@ -168,3 +180,44 @@ const update = () => {
 
 </script>
 
+<style>
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.box-card {
+  width: 480px;
+}
+.time {
+  font-size: 12px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding: 0;
+  min-height: auto;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+</style>

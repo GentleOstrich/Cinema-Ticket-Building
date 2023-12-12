@@ -23,18 +23,6 @@
                 我的影票</router-link>
             </span>
         </el-menu-item>
-        <el-menu-item index="3">
-            <el-icon><setting /></el-icon>
-            <span><router-link to="/home/settings" 
-                style="text-decoration: none; 
-                color: inherit;
-                padding-right: 119px; 
-                padding-top: 25px; 
-                padding-bottom: 10px;">
-                    设置
-                </router-link>
-            </span>
-        </el-menu-item>
     </el-menu>
 </template>
 

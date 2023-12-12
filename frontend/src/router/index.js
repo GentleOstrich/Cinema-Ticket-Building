@@ -6,7 +6,6 @@ import RegisterView from '../views/RegisterView.vue'
 import AboutView from '../views/AboutView.vue'
 import Userinfo from '../components/UserInformation.vue'
 import TicketForm from '../components/TicketForm.vue'
-import Settings from '../components/SettingInformation.vue'
 import MainView from "@/views/MainView.vue";
 import AdminView from '../views/AdminView.vue'
 import AdminReject from '../components/AdminReject.vue'
@@ -47,11 +46,6 @@ const router = createRouter({
                     name: 'userinfo',
                     component: Userinfo
                 },
-                {
-                    path: 'settings',
-                    name: 'settings',
-                    component: Settings
-                }
             ]
         },
         {

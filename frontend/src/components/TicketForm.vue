@@ -1,56 +1,34 @@
 <template>
-  <el-table :data="tableData" style="width: 100%" max-height="250">
-    <el-table-column fixed prop="date" label="Date" width="150"/>
-    <el-table-column prop="name" label="Name" width="120"/>
-    <el-table-column prop="state" label="State" width="120"/>
-    <el-table-column prop="city" label="City" width="120"/>
-    <el-table-column prop="address" label="Address" width="600"/>
-    <el-table-column prop="zip" label="Zip" width="120"/>
-    <el-table-column fixed="right" label="Operations" width="120">
+ <el-table :data="tableData" style="width: 10000px; margin-left: 20px;" table-layout="fixed">
+    <el-table-column prop="fields.name" label="电影名" width="250" />
+    <el-table-column prop="fields.genre" label="类型" width="250" />
+    <el-table-column prop="fields.region" label="地区" width="200" />
+    <el-table-column prop="fields.lasting" label="时长" width="150" />
+    <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
-            link
-            type="primary"
-            size="small"
-            @click.prevent="deleteRow(scope.$index)"
+          link
+          type="primary"
+          size="small"
+          style="color: red"
+          @click.prevent="deleteRow(scope.$index)"
         >
-          Remove
+          退订
         </el-button>
-      </template>
+        </template>
     </el-table-column>
-  </el-table>
-  <el-button class="mt-4" style="width: 100%" @click="onAddItem"
-  >Add Item
-  </el-button
-  >
-  TODO: 按照订票系统的要求更改表格内容
+ </el-table>
 </template>
 
 <script lang="ts" setup>
 import {ref} from 'vue'
-import dayjs from 'dayjs'
+import {ElMessage, ElMessageBox} from "element-plus";
+import axios from "axios/index";
 
 const now = new Date()
 
 const tableData = ref([
   {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-  {
-    date: '2016-05-03',
     name: 'Tom',
     state: 'California',
     city: 'Los Angeles',
@@ -60,19 +38,22 @@ const tableData = ref([
 ])
 
 const deleteRow = (index: number) => {
-  tableData.value.splice(index, 1)
+  ElMessageBox.confirm(
+    '该操作会删除已订的影票，确认吗',
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+        ElMessage.success('退订成功');
+        tableData.value.splice(index, 1);
+    })
+    .catch(() => {
+
+    })
 }
 
-const onAddItem = () => {
-  now.setDate(now.getDate() + 1)
-  tableData.value.push({
-    date: dayjs(now).format('YYYY-MM-DD'),
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  })
-}
 </script>
-  
