@@ -117,7 +117,7 @@
       </el-input>
     </el-row>
   </div>
-    <el-button @click="addMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
+    <el-button @click="addMovie; dialogTableVisible = false" style="margin-left: 670px; margin-top: 30px">确定</el-button>
   </el-dialog>
 
 

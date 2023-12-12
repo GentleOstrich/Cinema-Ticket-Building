@@ -1,7 +1,7 @@
 <template>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
     <el-table-column prop="fields.username" label="用户名" width="500" />
-    <el-table-column prop="fields.password" label="密码" width="500" />
+    <el-table-column prop="fields.email" label="邮箱" width="500" />
     <el-table-column fixed="right" label="操作" width="500">
       <template #default="scope">
         <el-button
@@ -27,7 +27,7 @@ import axios from 'axios';
 interface User {
   fields: {
     username: string;
-    password: string;
+    email: string;
   };
 }
 
