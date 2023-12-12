@@ -206,7 +206,7 @@
     <el-table-column prop="fields.name" label="电影名" width="450" />
     <el-table-column prop="fields.genre" label="类型" width="250" />
     <el-table-column prop="fields.region" label="地区" width="200" />
-    <el-table-column prop="fields.lasting" label="时长" width="200" />
+    <el-table-column prop="fields.lasting" label="时长(min)" width="200" />
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
@@ -217,6 +217,14 @@
         >
           修改电影
         </el-button>
+<!--        <el-button-->
+<!--          link-->
+<!--          type="primary"-->
+<!--          size="small"-->
+<!--          @click.prevent="updateRow(scope.$index)"-->
+<!--        >-->
+<!--          设置放映时间-->
+<!--        </el-button>-->
         <el-button
           link
           type="primary"
@@ -231,10 +239,6 @@
 
     </el-table-column>
   </el-table>
-
-
-
-
 
 </template>
 
@@ -287,6 +291,13 @@ const addMovie = () => {
         dialogTableVisible.value = false
       } else {
         ElMessage.error('添加失败(已有该电影)');
+        form.value.name = ref('')
+        form.value.lasting = ref('')
+        form.value.language = ref('')
+        form.value.region = ref('')
+        form.value.genre = ref('')
+        form.value.description = ref('')
+        form.value.year = ref('')
       }
     })
     .catch((error) => {
