@@ -216,6 +216,14 @@
           link
           type="primary"
           size="small"
+          @click.prevent="updateRow(scope.$index)"
+        >
+          修改电影
+        </el-button>
+        <el-button
+          link
+          type="primary"
+          size="small"
           style="color: red"
           @click.prevent="deleteRow(scope.$index)"
         >
@@ -311,6 +319,12 @@ async function fetchData() {
     console.error('Error fetching data:', error);
   }
 }
+
+const updateRow = (index : number) => {
+  dialogTableVisible1.value = true
+
+}
+
 
 const deleteRow = (index: number) => {
   ElMessageBox.confirm(
