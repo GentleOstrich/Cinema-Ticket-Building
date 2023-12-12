@@ -1,4 +1,5 @@
 <template>
+   <el-backtop :right="100" :bottom="100" />
   <el-input
       v-model="searchInfo"
       class="w-50 m-2"
@@ -43,16 +44,17 @@
   </div>
 
      <!-- 卡片风格 -->
-     <el-row>
+     <el-row justify="start" :gutter="20" style="margin: 20px">
       <el-col
         v-for="movie in movies"
-        :span="5"
-        style="margin-bottom: 10px"
-        :offset="1"
+        :span="6"
+        style="margin-top: 10px"
       >
-        <el-card>
-          {{ movie.fields.name }}
-        </el-card>
+        <div v-if="checkString(movie) == true">
+          <el-card>
+            {{ movie.fields.name }}
+          </el-card>
+        </div>
       </el-col>
     </el-row>
 
@@ -199,45 +201,3 @@ const checkString = (movie) => {
 }
 
 </script>
-
-<style>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
-}
-
-.box-card {
-  width: 480px;
-}
-.time {
-  font-size: 12px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button {
-  padding: 0;
-  min-height: auto;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
-</style>

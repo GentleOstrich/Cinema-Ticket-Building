@@ -1,5 +1,5 @@
 <template>
-
+  <el-backtop :right="100" :bottom="100"/>
   <div style="font-size: 0.6cm; margin: 30px 0 0 50px">您可以在这里新加影片，或对影片信息进行修改</div>
   <div style="text-align: center; margin-top: 30px">
   <el-button class="mt-4" style="width: 30%; margin-right: 30px" @click="dialogTableVisible = true"
