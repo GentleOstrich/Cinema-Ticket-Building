@@ -103,9 +103,6 @@
     <el-button @click="addMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
   </el-dialog>
 
-  <el-button class="mt-4" style="width: 30%; margin-left: 30px" @click="dialogTableVisible1 = true"
-    >修改电影</el-button
-  >
   <el-dialog v-model="dialogTableVisible1" title="修改电影信息">
     <div style="font-size: 0.5cm">请您重新编辑已有电影的相关信息</div>
     <div>&nbsp;</div>
