@@ -6,6 +6,5 @@ urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/user/', include(('user.urls', 'user'))),
     path('api/movie/', include(('movie.urls', 'movie'))),
-    path('api/ticket/', include('ticket.urls', 'ticket')),
     path(r'', TemplateView.as_view(template_name='index.html'))
 ]
