@@ -253,14 +253,14 @@ const dialogTableVisible1 = ref(false)
 const curIndex = ref(-1)
 
 const form = ref({
-  name: null,
-  region: null,
-  genre: null,
-  lasting: null,
-  year: null,
-  language: null,
-  description: null,
-  image:null
+  name: '',
+  region: '',
+  genre: '',
+  lasting: '',
+  year: '',
+  language: '',
+  description: '',
+  image:''
 })
 
 interface Movie {
@@ -287,17 +287,17 @@ const addMovie = () => {
         ElMessage.success('添加成功');
         // 假设 res.data.movie 是新添加的电影数据
         tableData.value.push(res.data); // 将新电影添加到 tableData
-        console.log(res.data);
         dialogTableVisible.value = false
       } else {
-        ElMessage.error('添加失败(已有该电影)');
-        form.value.name = ref('')
-        form.value.lasting = ref('')
-        form.value.language = ref('')
-        form.value.region = ref('')
-        form.value.genre = ref('')
-        form.value.description = ref('')
-        form.value.year = ref('')
+        if(res.data.errno === 1) ElMessage.error('电影名不能为空');
+        else if(res.data.errno === 2) ElMessage.error('添加失败(已有该电影)');
+        form.value.name = ''
+        form.value.lasting = ''
+        form.value.language = ''
+        form.value.region = ''
+        form.value.genre = ''
+        form.value.description = ''
+        form.value.year = ''
       }
     })
     .catch((error) => {
@@ -326,7 +326,15 @@ const updateMovie = () => {
         console.log(tableData);
         dialogTableVisible1.value = false
       } else {
-        ElMessage.error('修改失败(找不到电影)');
+        if(res.data.errno === 1) ElMessage.error('电影名不能为空');
+        else if(res.data.errno === 2) ElMessage.error('修改失败(电影名重复)');
+        form.value.name = ''
+        form.value.lasting = ''
+        form.value.language = ''
+        form.value.region = ''
+        form.value.genre = ''
+        form.value.description = ''
+        form.value.year = ''
       }
     })
     .catch((error) => {

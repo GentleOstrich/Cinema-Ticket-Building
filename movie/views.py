@@ -32,8 +32,10 @@ def create(request):
         language = data.get('language')
         description = data.get('description')
         movie = models.Movie.objects.filter(name=name)
+        if name == '' or name is None :
+            return JsonResponse({'errno': 1, 'msg': 'Null name'})
         if movie.exists():
-            return JsonResponse({'errno': 1, 'msg': 'Repeated name'})
+            return JsonResponse({'errno': 2, 'msg': 'Repeated name'})
         else:
             if image is None: movie = models.Movie.objects.create(name=name, region=region,
             lasting=lasting, year=year, language=language, description=description)
@@ -44,7 +46,7 @@ def create(request):
             json_data.pop('_state', None)  # 删除内部状态字段
             return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Create Success"})
     else:
-        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+        return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 
 @csrf_exempt  # 跨域设置
 def delete(request):
@@ -67,41 +69,42 @@ def update(request,old_name):
     if request.method == 'POST':
         data = {key: request.POST[key] for key in request.POST}
         movie = models.Movie.objects.get(name=old_name)
-        if movie is not None:
+        if data.get('name') is None or data.get('name') == '':
+            return JsonResponse({'errno': 1, 'msg': 'Null name'})
+        elif models.Movie.objects.filter(name=data.get('name')).exists:
+            return JsonResponse({'errno': 2, 'msg': 'Repeated name'})
+        elif movie is not None:
             image = request.FILES.get('image')
             if image is not None:
                 movie.image = image.read()
             name = data.get('name')
-            if name:
+            if name == '':
                 movie.name = name
             region = data.get('region')
-            if region:
+            if region == '':
                 movie.region = region
             genre = data.get('genre')
-            if genre:
+            if genre == '':
                 movie.genre = genre
             lasting = data.get('lasting')
-            if lasting:
+            if lasting == '':
                 movie.lasting = lasting
             year = data.get('year')
-            if year:
+            if year == '':
                 movie.year = year
             language = data.get('language')
-            if language:
+            if language == '':
                 movie.language = language
             description = data.get('description')
-            if description:
+            if description == '':
                 movie.description = description
-
             movie.save()
             json_data = movie.__dict__
             json_data.pop('_state', None)  # 删除内部状态字段
             print(json_data)
             return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Update Success"})
-        else:
-            return JsonResponse({'errno': 1, 'msg': 'Movie not exist!'})
     else:
-        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+        return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 
         
 
