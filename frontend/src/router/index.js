@@ -92,7 +92,7 @@ const router = createRouter({
                 },
                 {
                     path: '/admin/broadcast',
-                    name: 'admin/users',
+                    name: 'admin/broadcast',
                     component: AdminBroadcastForm
                 }
             ]
