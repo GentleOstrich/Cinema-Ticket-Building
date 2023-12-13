@@ -341,7 +341,6 @@ const updateMovie = () => {
   for (const key in form.value) {
     formData.append(key, form.value[key]);
   }
-  console.log(`/movie/update/${old_name}`)
   axios
       .post(`/movie/update/${old_name}/`, formData)
       .then((res) => {
