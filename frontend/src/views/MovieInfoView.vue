@@ -69,8 +69,11 @@ const tests = ['星期一6点', '星期二8点', '星期三10点', '星期四9�
               <el-text>
                 {{ test }}
               </el-text>
-              <el-button style="margin-left: 100px" @click="ifshow=!ifshow">
+              <el-button v-if="!ifshow" style="margin-left: 100px" @click="ifshow=!ifshow">
                 订票
+              </el-button>
+              <el-button v-else style="margin-left: 100px" @click="ifshow=!ifshow">
+                取消
               </el-button>
             </el-card>
           </el-col>
