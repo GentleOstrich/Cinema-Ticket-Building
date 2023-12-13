@@ -107,25 +107,25 @@ def update(request,old_name):
             if image is not None:
                 movie.image = image.read()
             name = data.get('name')
-            if name == '':
+            if name != '':
                 movie.name = name
             region = data.get('region')
-            if region == '':
+            if region != '':
                 movie.region = region
             genre = data.get('genre')
-            if genre == '':
+            if genre != '':
                 movie.genre = genre
             lasting = data.get('lasting')
-            if lasting == '':
+            if lasting != '':
                 movie.lasting = lasting
             year = data.get('year')
-            if year == '':
+            if year != '':
                 movie.year = year
             language = data.get('language')
-            if language == '':
+            if language != '':
                 movie.language = language
             description = data.get('description')
-            if description == '':
+            if description != '':
                 movie.description = description
             movie.save()
             json_data = {

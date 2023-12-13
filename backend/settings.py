@@ -18,7 +18,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',
-    'movie'
+    'movie',
+    'broadcast',
+    'ticket'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
