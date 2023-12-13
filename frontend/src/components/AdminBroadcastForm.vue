@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>{{ movie_name.value }}</div>
+  <div>{{ movie_name }}</div>
 </template>
 
 <style scoped>
