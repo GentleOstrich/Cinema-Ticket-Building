@@ -51,10 +51,11 @@
         style="margin-top: 10px"
     >
       <div v-if="checkString(movie) == true">
-        <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.fields.name}}"
+        <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name}}"
                      style="text-decoration: none; color: inherit">
           <el-card>
-            {{ movie.fields.name }}
+            {{ movie.name }}
+            <img :src=" 'data:image/jpeg;base64,' + movie.image"/>
           </el-card>
         </router-link>
       </div>

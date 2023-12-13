@@ -43,8 +43,6 @@ def create(request):
     if request.method == 'POST':
         data = {key: request.POST[key] for key in request.POST}
         image = request.FILES.get('image')
-        print(data)
-        print(request.FILES)
         name = data.get('name')
         region = data.get('region')
         genre = data.get('genre')
@@ -75,7 +73,7 @@ def create(request):
                 'lasting': movie.lasting,
                 # 其他需要的字段
             }
-            return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Create Success"})
+            return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Create Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 
@@ -140,7 +138,7 @@ def update(request,old_name):
                 'lasting': movie.lasting,
                 # 其他需要的字段
             }
-            return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Update Success"})
+            return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Update Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 

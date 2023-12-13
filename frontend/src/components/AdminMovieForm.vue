@@ -312,7 +312,7 @@ const addMovie = () => {
       if (res.data.errno === 0) {
         ElMessage.success('添加成功');
         // 假设 res.data.movie 是新添加的电影数据
-        tableData.value.push(res.data); // 将新电影添加到 tableData
+        tableData.value.push(res.data.data); // 将新电影添加到 tableData
         dialogTableVisible.value = false
       } else {
         if(res.data.errno === 1) ElMessage.error('电影名不能为空');
@@ -347,7 +347,7 @@ const updateMovie = () => {
     .then((res) => {
       if (res.data.errno === 0) {
         ElMessage.success('修改成功');
-        tableData.value.splice(curIndex.value,0,res.data);
+        tableData.value.splice(curIndex.value,0,res.data.data);
         tableData.value.splice(curIndex.value+1,1); 
         console.log(tableData);
         dialogTableVisible1.value = false
