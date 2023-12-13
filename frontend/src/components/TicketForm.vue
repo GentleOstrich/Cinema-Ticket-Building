@@ -1,9 +1,10 @@
 <template>
  <el-table :data="tableData" style="width: 10000px; margin-left: 20px;" table-layout="fixed">
-    <el-table-column prop="fields.name" label="电影名" width="250" />
-    <el-table-column prop="fields.genre" label="类型" width="250" />
-    <el-table-column prop="fields.region" label="地区" width="200" />
-    <el-table-column prop="fields.lasting" label="时长" width="150" />
+    <el-table-column prop="movie_name" label="电影名" width="250" />
+    <el-table-column prop="beginTime" label="开始时间" width="250" />
+    <el-table-column prop="endTime" label="结束时间" width="200" />
+    <el-table-column prop="time" label="购票时间" width="150" />
+    <el-table-column prop="seat" label="座位号" width="150" />
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
@@ -21,21 +22,39 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {ref,onMounted} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
-import axios from "axios/index";
+import axios from "axios";
 
 const now = new Date()
+// 在组件加载时获取数据
+onMounted(fetchData);
 
-const tableData = ref([
-  {
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
-])
+async function fetchData() {
+  try {
+    const response = await axios.get('/ticket/index/');
+    tableData.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+const form = ref({
+  beginTime: '',
+  endTime: '',
+  seats: ''
+})
+
+interface Ticket {
+  id: BigInt;
+  movie_name: string;
+  beginTime: string;
+  endTime: string;
+  time: string;
+  seat: BigInt;
+}
+
+const tableData = ref<Ticket[]>([]);
 
 const deleteRow = (index: number) => {
   ElMessageBox.confirm(
