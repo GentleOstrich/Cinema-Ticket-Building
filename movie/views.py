@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-import json
+import base64,json
 from . import models
 
 
@@ -13,8 +13,27 @@ from . import models
 def index(request):
     if request.method == 'GET':
         movies = models.Movie.objects.all()
-        str_data = serializers.serialize('json', movies)
-        json_data = json.loads(str_data)
+        json_data = []
+        for movie in movies:
+            # 构造字典
+            movie_dict = {
+                'name': movie.name,
+                'description': movie.description,
+                'year': movie.year,
+                'region': movie.region,
+                'language': movie.language,
+                'genre': movie.genre,
+                'lasting': movie.lasting,
+                # 其他需要的字段
+            }
+
+            # 添加经过Base64编码的图片
+            if movie.image:
+                movie_dict['image'] = base64.b64encode(movie.image).decode()
+            else:
+                movie_dict['image'] = None
+
+            json_data.append(movie_dict)
         return JsonResponse({'errno': 0, 'data': json_data})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
@@ -24,6 +43,8 @@ def create(request):
     if request.method == 'POST':
         data = {key: request.POST[key] for key in request.POST}
         image = request.FILES.get('image')
+        print(data)
+        print(request.FILES)
         name = data.get('name')
         region = data.get('region')
         genre = data.get('genre')
@@ -37,13 +58,23 @@ def create(request):
         if movie.exists():
             return JsonResponse({'errno': 2, 'msg': 'Repeated name'})
         else:
-            if image is None: movie = models.Movie.objects.create(name=name, region=region,
+            if image is None: 
+                movie = models.Movie.objects.create(name=name, region=region,
             lasting=lasting, year=year, language=language, description=description)
-            else: movie = models.Movie.objects.create(name=name, region=region,image=image.read(),
+            else: 
+                movie = models.Movie.objects.create(name=name, region=region,image=image.read(),
             lasting=lasting, year=year, language=language, description=description) 
             movie.save()
-            json_data = movie.__dict__
-            json_data.pop('_state', None)  # 删除内部状态字段
+            json_data = {
+                'name': movie.name,
+                'description': movie.description,
+                'year': movie.year,
+                'region': movie.region,
+                'language': movie.language,
+                'genre': movie.genre,
+                'lasting': movie.lasting,
+                # 其他需要的字段
+            }
             return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Create Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
@@ -99,14 +130,19 @@ def update(request,old_name):
             if description == '':
                 movie.description = description
             movie.save()
-            json_data = movie.__dict__
-            json_data.pop('_state', None)  # 删除内部状态字段
-            print(json_data)
+            json_data = {
+                'name': movie.name,
+                'description': movie.description,
+                'year': movie.year,
+                'region': movie.region,
+                'language': movie.language,
+                'genre': movie.genre,
+                'lasting': movie.lasting,
+                # 其他需要的字段
+            }
             return JsonResponse({'errno': 0, 'fields':json_data, 'msg': "Update Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
-
-        
 
 
 

@@ -99,7 +99,15 @@
           style="margin: 10px 0 10px 0">
       </el-input>
     </el-row>
-  </div>
+    </div>
+    <div class="demo-input-suffix">
+    <el-row :gutter="20">
+      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
+        >上传图片</span
+      >
+      <input type="file" @change="handleFileUpload">
+    </el-row>
+    </div>
     <el-button @click="addMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
   </el-dialog>
 
@@ -199,14 +207,30 @@
       </el-input>
     </el-row>
   </div>
+    <div class="demo-input-suffix">
+      <el-row :gutter="20">
+        <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
+          >上传图片</span
+        >
+        <el-input
+            v-model="form.image"
+            class="w-50 m-2"
+            placeholder="请上传图片"
+            autosize
+            type="file"
+            style="margin: 10px 0 10px 0"
+            @change="handleFileUpload">
+        </el-input>
+      </el-row>
+    </div>
     <el-button @click="updateMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
   </el-dialog>
   </div>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
-    <el-table-column prop="fields.name" label="电影名" width="450" />
-    <el-table-column prop="fields.genre" label="类型" width="250" />
-    <el-table-column prop="fields.region" label="地区" width="200" />
-    <el-table-column prop="fields.lasting" label="时长(min)" width="200" />
+    <el-table-column prop="name" label="电影名" width="450" />
+    <el-table-column prop="genre" label="类型" width="250" />
+    <el-table-column prop="region" label="地区" width="200" />
+    <el-table-column prop="lasting" label="时长(min)" width="200" />
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
@@ -260,16 +284,14 @@ const form = ref({
   year: '',
   language: '',
   description: '',
-  image:''
+  image:null
 })
 
 interface Movie {
-  fields: {
-    name: string;
-    genre: string;
-    region: string;
-    lasting: string;
-  };
+  name: string;
+  genre: string;
+  region: string;
+  lasting: string;
 }
 
 const tableData = ref<Movie[]>([]);
@@ -281,7 +303,11 @@ const addMovie = () => {
   }
 
   axios
-    .post('/movie/create/',formData)
+    .post('/movie/create/',formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     .then((res) => {
       if (res.data.errno === 0) {
         ElMessage.success('添加成功');
@@ -307,7 +333,7 @@ const addMovie = () => {
 }
 
 const updateMovie = () => {
-  const old_name = tableData.value[curIndex.value].fields.name
+  const old_name = tableData.value[curIndex.value].name
   console.log(curIndex.value)
   console.log(tableData.value[curIndex.value])
   console.log(old_name)
@@ -372,7 +398,7 @@ const deleteRow = (index: number) => {
     }
   )
     .then(() => {
-      const name = tableData.value[index].fields.name;
+      const name = tableData.value[index].name;
       axios
         .post("/movie/delete/",{name:name})
         .then((res) => {
@@ -391,6 +417,10 @@ const deleteRow = (index: number) => {
     .catch(() => {
 
     })
+}
+
+const handleFileUpload = (event) => {
+  form.value.image = event.target.files[0];
 }
 
 </script>

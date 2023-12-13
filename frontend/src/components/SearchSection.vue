@@ -52,7 +52,8 @@
       >
         <div v-if="checkString(movie) == true">
           <el-card>
-            {{ movie.fields.name }}
+            {{ movie.name }}
+            <img :src="'data:image/jpg;base64,' + movie.image"/>
           </el-card>
         </div>
       </el-col>
@@ -89,12 +90,11 @@ import {onMounted} from "vue";
 import axios from "axios";
 
 interface Movie {
-  fields: {
-    name: string;
-    genre: string;
-    region: string;
-    lasting: string;
-  };
+  name: string;
+  genre: string;
+  region: string;
+  lasting: string;
+  image: string;
 }
 
 const movies = ref<Movie[]>([]);
@@ -105,7 +105,7 @@ async function fetchData() {
   try {
     const response = await axios.get('/movie/index');
     movies.value = response.data.data;
-    console.log(movies.value.length);
+    console.log(movies.value[length - 1].image);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -123,9 +123,9 @@ const handleChange = (val: string[]) => {
 
 const checkString = (movie) => {
   console.log(radio1.value)
-  let genre = movie.fields.genre
-  let region = movie.fields.region
-  let lasting = movie.fields.lasting
+  let genre = movie.genre
+  let region = movie.region
+  let lasting = movie.lasting
 
   let r1 = false
   let r2 = false
