@@ -13,6 +13,7 @@ import AdminEnter from "@/components/AdminEnter.vue";
 import AdminMovieForm from "@/components/AdminMovieForm.vue";
 import AdminUserForm from "@/components/AdminUserForm.vue";
 import MovieInfoView from "@/views/MovieInfoView.vue";
+import AdminBroadcastForm from "@/components/AdminBroadcastForm.vue";
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -88,6 +89,11 @@ const router = createRouter({
                     path: '/admin/users',
                     name: 'admin/users',
                     component: AdminUserForm
+                },
+                {
+                    path: '/admin/broadcast',
+                    name: 'admin/users',
+                    component: AdminBroadcastForm
                 }
             ]
         }
