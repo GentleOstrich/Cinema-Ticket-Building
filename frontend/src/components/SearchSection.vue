@@ -1,17 +1,10 @@
-<template>
+<template >
   <el-backtop :right="100" :bottom="100"/>
-  <el-input
-      v-model="searchInfo"
-      class="w-50 m-2"
-      size="large"
-      placeholder="请输入电影名/导演名"
-      :suffix-icon="Search"
-  />
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="类型" name="1">
         <div style="margin-top: 0px">
-          <el-radio-group v-model="radio1" size="small">
+          <el-radio-group v-model="radio1" size="small" @change="findMovies">
             <el-radio label="1" border="true">全部</el-radio>
             <el-radio label="2" border="true">悬疑</el-radio>
             <el-radio label="3" border="true">动作</el-radio>
@@ -21,7 +14,7 @@
       </el-collapse-item>
       <el-collapse-item title="地区" name="2">
         <div style="margin-top: 0px">
-          <el-radio-group v-model="radio2" size="small">
+          <el-radio-group v-model="radio2" size="small" @change="findMovies">
             <el-radio label="1" border="true">全部</el-radio>
             <el-radio label="2" border="true">中国大陆</el-radio>
             <el-radio label="3" border="true">港台</el-radio>
@@ -32,7 +25,7 @@
       </el-collapse-item>
       <el-collapse-item title="时长" name="3">
         <div style="margin-top: 0px">
-          <el-radio-group v-model="radio3" size="small">
+          <el-radio-group v-model="radio3" size="small" @change="findMovies">
             <el-radio label="1" border="true">全部</el-radio>
             <el-radio label="2" border="true">小于60分钟</el-radio>
             <el-radio label="3" border="true">60分钟-120分钟</el-radio>
@@ -48,11 +41,11 @@
   <!-- 卡片风格 -->
   <el-row justify="start" :gutter="20" style="margin: 20px">
     <el-col
-        v-for="movie in movies"
+        v-for="movie in temp"
         :span="6"
         style="margin-top: 20px"
     >
-      <div v-if="checkString(movie) == true">
+      <div>
         <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name}}"
                      style="text-decoration: none; color: inherit">
           <el-card :body-style="{ padding: '0px' }">
@@ -92,13 +85,15 @@ interface Movie {
 }
 
 const movies = ref<Movie[]>([]);
-
+const myMovies = ref<Movie[]>([])
+let temp = myMovies
 onMounted(fetchData);
 
 async function fetchData() {
   try {
     const response = await axios.get('/movie/index');
     movies.value = response.data.data;
+    myMovies.value = movies.value
     console.log(movies.value[length - 1].image);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -113,6 +108,14 @@ const activeNames = ref([''])
 
 const handleChange = (val: string[]) => {
   console.log(val)
+}
+
+const findMovies = () => {
+  temp.value = []
+  for (let i = 0; i < movies.value.length; i++) {
+    checkString(movies.value[i])
+  }
+  console.log(temp.value.length)
 }
 
 const checkString = (movie) => {
@@ -191,14 +194,18 @@ const checkString = (movie) => {
       r3 = true;
     }
   }
-  return r1 && r2 && r3;
+  if(r1 && r2 && r3) {
+    temp.value.push(movie)
+  }
 }
 
 
 </script>
 
 <style>
-
+.example-showcase .el-loading-mask {
+  z-index: 9;
+}
 
 .demo-image__error .block {
   padding: 30px 0;
