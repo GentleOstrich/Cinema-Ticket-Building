@@ -1,11 +1,11 @@
 <template>
  <el-table :data="tableData" style="width: 10000px; margin-left: 20px;" table-layout="fixed">
-    <el-table-column prop="movie_name" label="电影名" width="250" />
-    <el-table-column prop="beginTime" label="开始时间" width="250" />
+    <el-table-column prop="movie_name" label="电影名" width="300" />
+    <el-table-column prop="beginTime" label="开始时间" width="200" />
     <el-table-column prop="endTime" label="结束时间" width="200" />
-    <el-table-column prop="time" label="购票时间" width="150" />
-    <el-table-column prop="seat" label="座位号" width="150" />
-    <el-table-column fixed="right" label="操作" width="400">
+    <el-table-column prop="time" label="购票时间" width="200" />
+    <el-table-column prop="seat" label="座位号" width="200" />
+    <el-table-column fixed="right" label="操作" width="200">
       <template #default="scope">
         <el-button
           link
