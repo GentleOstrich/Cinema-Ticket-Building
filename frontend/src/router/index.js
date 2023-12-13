@@ -38,6 +38,7 @@ const router = createRouter({
             name: 'movies_info',
             component: MovieInfoView,
         },
+
         {
             path: '/home',
             name: 'home',
