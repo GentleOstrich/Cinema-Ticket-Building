@@ -72,11 +72,6 @@ def delete(request,id):
 def update(request,id):
     if request.method == 'POST':
         broadcast = models.Broadcast.objects.get(id=id)
-        hall_name = request.POST.get('hall_name')
-        if hall_name != '':
-            hall = models.Hall.objects.get(name=hall_name)
-            broadcast.hall = hall
-            broadcast.seats = "0"*hall.seats_num
         beginTime = request.POST.get('beginTime')
         if beginTime != '':
             broadcast.beginTime = beginTime

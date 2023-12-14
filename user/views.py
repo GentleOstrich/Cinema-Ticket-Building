@@ -102,12 +102,25 @@ def delete(request):
         data = json.loads(request.body)
         username = data.get('username')
         user = User.objects.filter(username=username)
-        print(username)
         if user.exists():
             user.delete()
             return JsonResponse({'errno': 0, 'msg': "Delete Success"})
         else:
             return JsonResponse({'errno': 1, 'msg': 'Username not exist'})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def update(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        password = data.get('password')
+        email = data.get('email')
+        user = request.user
+        user.password = password
+        user.email = email
+        user.save()
+        return JsonResponse({'errno': 0, 'msg': "Update Success"})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 

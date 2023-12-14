@@ -9,5 +9,6 @@ urlpatterns = [
     path('adminCheck/', adminCheck),
     path('index/', index),
     path('delete/', delete),
-    path('askName/', askName)
+    path('askName/', askName),
+    path('update/', update),
 ]
