@@ -238,7 +238,7 @@ function onContentChange() {
       />
     </div>
     <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
-    <div style="text-align: center">
+    <div v-if="score > 0" style="text-align: center">
       <el-rate
           v-model="score"
           disabled
@@ -247,6 +247,7 @@ function onContentChange() {
           score-template="{value} points"
       />
     </div>
+    <div v-else style="text-align: center; color: gray">暂无评分</div>
     <!-- 收藏按钮 -->
     <div v-loading.fullscreen.lock="fullscreenLoading">
       <div style="text-align: center" v-if="!isFavorite">
