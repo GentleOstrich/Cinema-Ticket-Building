@@ -8,14 +8,33 @@ import boolean from "async-validator/dist-types/validator/boolean";
 
 const route = useRoute()
 const router = useRouter()
-let movie_name = ref(null)
-let movie_image = ref(null)
+let movie_name = ref('')
+let movie_image = ref('')
 
 const goBack = () => {
   router.back()
 }
 const getScore = () => {
 
+}
+
+const addFavorite = () => {
+  axios
+    .post(`favorite/create/${movie_name.value}/`)
+    .then((res) => {
+          if (res.data.errno === 0) {
+            ElMessage({
+              message: '收藏成功！',
+              type: 'success',
+            })
+          } else {
+
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          ElMessage.error('系统错误');
+        });
 }
 interface Broadcast {
   id: BigInt;
@@ -171,7 +190,7 @@ let isStarred = false;
       <div style="text-align: center"><el-icon style="background: #fce266"><Star /></el-icon>这里应该有评分</div>
       <!-- 收藏按钮 -->
   <div style="text-align: center">
-      <el-button star size="mini" style="margin-top: 10px">
+      <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
         收藏
       </el-button></div>
     <div style="font-size: 0.7cm">电影详情:</div>

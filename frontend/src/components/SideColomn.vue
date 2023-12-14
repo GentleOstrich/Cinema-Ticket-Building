@@ -23,6 +23,17 @@
                 我的影票</router-link>
             </span>
         </el-menu-item>
+        <el-menu-item index="3">
+            <el-icon><Star /></el-icon>
+            <span><router-link to="/home/userfavorite" 
+                style="text-decoration: none; 
+                color: inherit; 
+                padding-right: 99px; 
+                padding-top: 25px; 
+                padding-bottom: 10px;">
+                我的收藏</router-link>
+            </span>
+        </el-menu-item>
     </el-menu>
 </template>
 
