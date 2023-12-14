@@ -189,6 +189,7 @@ function onSubmit() {
     console.error(error);
     ElMessage.error('系统错误');
   });
+  window.location.reload();
 }
 
 function onRatingChange() {
@@ -313,14 +314,15 @@ function onContentChange() {
           placeholder="请输入评论内容"
           @change="onContentChange"
       />
-      <el-button style="margin-top: 14px" type="primary" @click="onSubmit">提交评论</el-button>
+      <el-button style="margin-top: 14px;" type="primary" @click="onSubmit">提交评论</el-button>
 
-      <div class="comments">
+      <div class="comments" style="margin-top: 30px">
         <div class="comment" v-for="comment in comments" :key="comment.id">
-          <span>时间：{{ comment.time }}<br/></span>
-          <span>用户：{{ comment.username }}<br/></span>
-          <span>评分：{{ comment.rating }}<br/></span>
-          <span>评论：{{ comment.content }}</span>
+          <span style="font-size: 0.5cm;"><strong>{{ comment.username }}</strong></span>
+          <span style="font-size: 0.25cm; color: gray; margin-left: 100px">{{ comment.time }}<br/></span>
+          <div style="margin-top: 5px; font-size: 0.3cm">评分：{{ comment.rating }}<br/></div>
+          <div style="margin-top: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.content }}<br/></div>
+          <el-divider />
         </div>
       </div>
     </div>
