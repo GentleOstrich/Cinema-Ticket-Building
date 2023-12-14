@@ -74,7 +74,10 @@ def score(request, movie_name):
             if comment.rating != 0 and comment.movie.name == movie_name:
                 total_score += comment.rating
                 total_num += 1
-        score = total_score*1.0/total_num
+        if total_num != 0 :
+            score = total_score*1.0/total_num
+        else:
+            score = 0
         return JsonResponse({'errno': 0, 'score': score})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
