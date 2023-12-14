@@ -169,17 +169,16 @@ let isStarred = false;
 
   <el-drawer v-model="ifshow" title="I am the title" :with-header="false">
     <el-divider style="background: black">屏幕</el-divider>
-    <el-row justify="start">
+    <el-row justify="center">
       <el-col
           v-for="(i, index) in aim_broadcast.seats"
-          :span="6"
+          :span="3"
       >
-        <div>
-          <el-button v-if="i == 0" style="background-color: navajowhite" @click="buy(index)"></el-button>
-          <el-button v-else style="background-color: orangered"
+        <div style="margin-top: 10px">
+          <el-button v-if="i == 0" style="background-color: navajowhite; margin-left: 10px" @click="buy(index)"></el-button>
+          <el-button v-else style="background-color: orangered; margin-left: 10px"
                      @click="evt => ElMessageBox.alert('抱歉，此座位已售出')">
           </el-button>
-
         </div>
       </el-col>
     </el-row>

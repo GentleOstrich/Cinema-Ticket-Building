@@ -1,7 +1,7 @@
 <template>
   <el-backtop :right="100" :bottom="100"/>
   <div class="demo-collapse">
-    <el-collapse v-model="activeNames" @change="handleChange">
+    <el-collapse v-model="activeNames" @change="handleChange" style="margin: 0 10px 0 10px">
       <el-collapse-item title="类型" name="1">
         <div style="margin-top: 0px">
           <el-radio-group v-model="radio1" size="small" @change="findMovies">
