@@ -3,8 +3,6 @@ import {onMounted, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useRoute, useRouter} from "vue-router";
 import axios, {get} from "axios";
-import SideColomn from "../components/SideColomn.vue";
-import boolean from "async-validator/dist-types/validator/boolean";
 
 const route = useRoute()
 const router = useRouter()
@@ -146,42 +144,43 @@ const rating = ref(0);
 const content = ref("");
 const comments = ref([]);
 
-function getComments() {
-  axios.get("/api/comments")
-      .then((response) => {
-        // 获取评论数据
-        this.comments = response.data;
-      })
-      .catch((error) => {
-        // 获取评论数据失败
-      });
-}
+const comment_form = ref({
+  content: '',
+  rating: ''
+})
 
 function onSubmit() {
   // 获取评分和评论内容
-  const rating = rating.value;
-  const content = content.value;
+  const formData = new FormData();
+  for (const key in comment_form.value) {
+    formData.append(key, comment_form.value[key])
+  }
 
   // 发送评论数据
-  axios.post("/api/comments", {
-    rating,
-    content,
-  }).then((response) => {
+  axios.post("/comments/create", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+  ).then((response) => {
+    if (response.data.errno === 0) {
+      ElMessage.success('评论成功')
+    } else {
+      ElMessage.success('评论失败')
+      comment_form.value.content = ''
+      comment_form.value.rating = ''
+    }
     // 评论提交成功
   }).catch((error) => {
     // 评论提交失败
+    console.error(error);
+    ElMessage.error('系统错误');
   });
 }
 
 function onRatingChange(value) {
-  this.rating = value;
+  comment_form.value.rating = value;
 }
-
-function star() {
-
-}
-
-let isStarred = false;
 
 </script>
 

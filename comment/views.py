@@ -35,14 +35,16 @@ def create(request, movie_name):
         movie = models.Movie.objects.get(name=movie_name)
         user = request.user
         content = request.POST.get('content')
+        rating = request.POST.get('rating')
         time = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-        comment = models.Comment.objects.create(user=user, movie=movie, time=time, content=content)
+        comment = models.Comment.objects.create(user=user, movie=movie, time=time, content=content, rating=rating)
         comment.save()
         json_data = {
             'id': comment.id,
             'username': comment.user.username,
             'time': comment.time,
-            'content': comment.content
+            'content': comment.content,
+            'rating': comment.rating
         }
         return JsonResponse({'errno': 0, 'data': json_data, 'msg': "Create Comment Success"})
     else:
