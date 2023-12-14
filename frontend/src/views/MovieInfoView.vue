@@ -68,9 +68,19 @@ interface Broadcast {
   price: BigInt;
 }
 
+interface Movie {
+  name : string;
+  description : string;
+  year : string;
+  region : string;
+  language : string;
+  genre : string;
+  lasting : string;
+}
 
 const broadcasts = ref<Broadcast[]>([]);
 const aim_broadcast = ref<Broadcast>();
+const movie = ref<Movie>();
 const isFavorite = ref(false);
 const fullscreenLoading = ref(true);
 
@@ -82,8 +92,10 @@ async function fetchBroadcast() {
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
     const response2 = await axios.get(`/comment/index/${movie_name.value}/`)
+    const response3 = await axios.get(`/movie/show/${movie_name.value}/`);
     broadcasts.value = response.data.data;
     comments.value = response2.data.data;
+    movie.value = response3.data.data;
     console.log(comments.value)
     isFavorite.value = response1.data.code !== 0;
     console.log(isFavorite.value)
@@ -241,12 +253,12 @@ let isStarred = false;
         </el-button>
       </div>
     </div>
-    <div style="font-size: 0.7cm">电影详情:</div>
+    <div style="font-size: 0.7cm">电影详情</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
-      <div>年份：<br/></div>
-      <div>类型：<br/></div>
-      <div>语言：<br/></div>
-      <div>电影简介：</div>
+      <div>年份：{{ movie?.year }}<br/></div>
+      <div>类型：{{ movie?.genre }}<br/></div>
+      <div>语言：{{ movie?.language }}<br/></div>
+      <div>电影简介：{{ movie?.description }}</div>
     </div>
   </el-card>
 
