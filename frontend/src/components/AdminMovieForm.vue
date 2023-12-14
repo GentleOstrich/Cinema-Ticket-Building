@@ -217,7 +217,7 @@
       <el-button @click="updateMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="目前还没有电影">
+  <el-table v-loading.fullscreen.lock="fullscreenLoading" :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="目前还没有电影">
     <el-table-column prop="name" label="电影名" width="450"/>
     <el-table-column prop="genre" label="类型" width="250"/>
     <el-table-column prop="region" label="地区" width="200"/>
@@ -263,6 +263,8 @@
 import {ref, onMounted} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
 import axios from 'axios';
+
+const fullscreenLoading = ref(true);
 
 const dialogTableVisible = ref(false)
 const dialogTableVisible1 = ref(false)
@@ -366,9 +368,12 @@ onMounted(fetchData);
 
 async function fetchData() {
   try {
+    fullscreenLoading.value = true;
     const response = await axios.get('/movie/index');
     tableData.value = response.data.data;
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }
