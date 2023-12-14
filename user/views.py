@@ -118,8 +118,10 @@ def update(request):
         password = data.get('password')
         email = data.get('email')
         user = request.user
-        user.password = make_password(password)
-        user.email = email
+        if password != '':
+            user.password = make_password(password)
+        if email != '':
+            user.email = email
         user.save()
         return JsonResponse({'errno': 0, 'msg': "Update Success"})
     else:

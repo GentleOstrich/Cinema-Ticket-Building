@@ -58,3 +58,14 @@ def delete(request,id):
             return JsonResponse({'errno': 1, 'msg': 'Favorite not exist'})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def isFavorite(request,movie_name):
+    if request.method == 'GET':
+        favorites = models.Favorite.objects.all()
+        for favorite in favorites:
+            if favorite.movie.name == movie_name and favorite.user.username == request.user.username:
+                return JsonResponse({'code': 1, 'msg': "Yes"})
+        return JsonResponse({'code': 0, 'msg': "No"})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
