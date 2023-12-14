@@ -39,6 +39,24 @@ def index(request):
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
 
 @csrf_exempt
+def show(request, movie_name):
+    if request.method == 'GET':
+        movie = models.Movie.objects.get(name=movie_name)
+        json_data = {
+                    'name': movie.name,
+                    'description': movie.description,
+                    'year': movie.year,
+                    'region': movie.region,
+                    'language': movie.language,
+                    'genre': movie.genre,
+                    'lasting': movie.lasting,
+                }
+        return JsonResponse({'errno': 0, 'data': json_data})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+
+@csrf_exempt
 def create(request):
     if request.method == 'POST':
         data = {key: request.POST[key] for key in request.POST}

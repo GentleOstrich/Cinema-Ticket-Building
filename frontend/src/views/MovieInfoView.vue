@@ -43,7 +43,7 @@ const deleteFavorite = () => {
         if (res.data.errno === 0) {
           isFavorite.value = !isFavorite.value
           ElMessage({
-            message: '收藏成功！',
+            message: '已取消收藏！',
             type: 'success',
           })
 
@@ -63,11 +63,22 @@ interface Broadcast {
   beginTime: string;
   endTime: string;
   seats: string;
+  price: BigInt;
 }
 
+interface Movie {
+  name : string;
+  description : string;
+  year : string;
+  region : string;
+  language : string;
+  genre : string;
+  lasting : string;
+}
 
 const broadcasts = ref<Broadcast[]>([]);
 const aim_broadcast = ref<Broadcast>();
+const movie = ref<Movie>();
 const isFavorite = ref(false);
 const fullscreenLoading = ref(true);
 
@@ -79,8 +90,10 @@ async function fetchBroadcast() {
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
     const response2 = await axios.get(`/comment/index/${movie_name.value}/`)
+    const response3 = await axios.get(`/movie/show/${movie_name.value}/`);
     broadcasts.value = response.data.data;
     comments.value = response2.data.data;
+    movie.value = response3.data.data;
     console.log(comments.value)
     isFavorite.value = response1.data.code !== 0;
     console.log(isFavorite.value)
@@ -239,12 +252,12 @@ function onRatingChange(value) {
         </el-button>
       </div>
     </div>
-    <div style="font-size: 0.7cm">电影详情:</div>
+    <div style="font-size: 0.7cm">电影详情</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
-      <div>年份：<br/></div>
-      <div>类型：<br/></div>
-      <div>语言：<br/></div>
-      <div>电影简介：</div>
+      <div>年份：{{ movie?.year }}<br/></div>
+      <div>类型：{{ movie?.genre }}<br/></div>
+      <div>语言：{{ movie?.language }}<br/></div>
+      <div>电影简介：{{ movie?.description }}</div>
     </div>
   </el-card>
 
@@ -257,11 +270,12 @@ function onRatingChange(value) {
             v-for="broadcast in broadcasts"
             :span="6"
             style="flex: auto">
-          <el-card style="height: 100px; margin: 30px 0 30px 0">
+          <el-card style="height: 150px; margin: 30px 0 30px 0">
             <el-text>场馆名：{{ broadcast.hall_name }}<br/></el-text>
             <el-text>开始时间：{{ broadcast.beginTime }}<br/></el-text>
             <el-text>结束时间：{{ broadcast.endTime }}</el-text>
-            <el-button style="margin-left: 100px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
+            <el-text style="margin-left: 60px; color:orangered; font-size: 0.5cm">￥{{broadcast.price}}<br/></el-text>
+            <el-button type="success" style="margin-left: 100px; margin-top: 10px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
               订票
             </el-button>
           </el-card>
@@ -295,7 +309,7 @@ function onRatingChange(value) {
 
       <div class="comments">
         <div class="comment" v-for="comment in comments" :key="comment.id">
-          <span class="rating">评分：{{ comment.rating }}</span>
+          <span class="rating">评分：{{ comment.rating }}<br/></span>
           <span class="content">{{ comment.content }}</span>
         </div>
       </div>
