@@ -20,7 +20,8 @@ def index(request, movie_name):
                     'id': comment.id,
                     'username': comment.user.username,
                     'time': comment.time,
-                    'content': comment.content
+                    'content': comment.content,
+                    'rating': comment.rating
                 }
 
                 json_data.append(comment_dict)

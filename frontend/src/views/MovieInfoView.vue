@@ -67,13 +67,13 @@ interface Broadcast {
 }
 
 interface Movie {
-  name : string;
-  description : string;
-  year : string;
-  region : string;
-  language : string;
-  genre : string;
-  lasting : string;
+  name: string;
+  description: string;
+  year: string;
+  region: string;
+  language: string;
+  genre: string;
+  lasting: string;
 }
 
 const broadcasts = ref<Broadcast[]>([]);
@@ -159,7 +159,7 @@ const comments = ref([]);
 
 const comment_form = ref({
   content: '',
-  rating: ''
+  rating: 0
 })
 
 function onSubmit() {
@@ -168,9 +168,9 @@ function onSubmit() {
   for (const key in comment_form.value) {
     formData.append(key, comment_form.value[key])
   }
-
+  console.log(comment_form.value)
   // 发送评论数据
-  axios.post("/comments/create", formData, {
+  axios.post(`/comment/create/${movie_name.value}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -181,7 +181,7 @@ function onSubmit() {
     } else {
       ElMessage.success('评论失败')
       comment_form.value.content = ''
-      comment_form.value.rating = ''
+      comment_form.value.rating = 0
     }
     // 评论提交成功
   }).catch((error) => {
@@ -191,8 +191,14 @@ function onSubmit() {
   });
 }
 
-function onRatingChange(value) {
-  comment_form.value.rating = value;
+function onRatingChange() {
+  comment_form.value.rating = rating.value;
+  console.log(comment_form.value.rating)
+}
+
+function onContentChange() {
+  comment_form.value.content = content.value;
+  console.log(comment_form.value.content)
 }
 
 </script>
@@ -274,8 +280,9 @@ function onRatingChange(value) {
             <el-text>场馆名：{{ broadcast.hall_name }}<br/></el-text>
             <el-text>开始时间：{{ broadcast.beginTime }}<br/></el-text>
             <el-text>结束时间：{{ broadcast.endTime }}</el-text>
-            <el-text style="margin-left: 60px; color:orangered; font-size: 0.5cm">￥{{broadcast.price}}<br/></el-text>
-            <el-button type="success" style="margin-left: 100px; margin-top: 10px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
+            <el-text style="margin-left: 60px; color:orangered; font-size: 0.5cm">￥{{ broadcast.price }}<br/></el-text>
+            <el-button type="success" style="margin-left: 100px; margin-top: 10px"
+                       @click="ifshow=!ifshow, aim_broadcast=broadcast">
               订票
             </el-button>
           </el-card>
@@ -304,13 +311,16 @@ function onRatingChange(value) {
       <el-input
           v-model="content"
           placeholder="请输入评论内容"
+          @change="onContentChange"
       />
       <el-button style="margin-top: 14px" type="primary" @click="onSubmit">提交评论</el-button>
 
       <div class="comments">
         <div class="comment" v-for="comment in comments" :key="comment.id">
-          <span class="rating">评分：{{ comment.rating }}<br/></span>
-          <span class="content">{{ comment.content }}</span>
+          <span>时间：{{ comment.time }}<br/></span>
+          <span>用户：{{ comment.username }}<br/></span>
+          <span>评分：{{ comment.rating }}<br/></span>
+          <span>评论：{{ comment.content }}</span>
         </div>
       </div>
     </div>
