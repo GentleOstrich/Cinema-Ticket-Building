@@ -5,5 +5,5 @@ urlpatterns = [
     path('index/', index),
     path('create/<str:movie_name>/',create),
     path('delete/<int:id>/',delete),
-    path('isFavorite/<str:movie_name>',isFavorite),
+    path('isFavorite/<str:movie_name>/',isFavorite),
 ]

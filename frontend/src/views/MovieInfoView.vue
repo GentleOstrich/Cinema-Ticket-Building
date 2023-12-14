@@ -17,6 +17,7 @@ const goBack = () => {
 const getScore = () => {
 
 }
+const value = ref(3.7)
 
 
 const addFavorite = () => {
@@ -24,10 +25,12 @@ const addFavorite = () => {
       .post(`favorite/create/${movie_name.value}/`)
       .then((res) => {
         if (res.data.errno === 0) {
+          isFavorite.value = !isFavorite.value
           ElMessage({
             message: '收藏成功！',
             type: 'success',
           })
+
         } else {
 
         }
@@ -49,7 +52,6 @@ interface Broadcast {
 
 const broadcasts = ref<Broadcast[]>([]);
 const aim_broadcast = ref<Broadcast>();
-
 const isFavorite = ref(false);
 
 async function fetchBroadcast() {
@@ -57,9 +59,10 @@ async function fetchBroadcast() {
     movie_image.value = route.query.movie_image as string
     movie_name.value = route.query.movie_name as string
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
-    const response1 = await axios.get('/favorite/isFavorite/${movie_name.value}/');
+    const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
     broadcasts.value = response.data.data;
     isFavorite.value = response1.data.code !== '0';
+    console.log(isFavorite.value)
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -68,11 +71,9 @@ async function fetchBroadcast() {
 
 onMounted(() => {
   fetchBroadcast();
-})
-
-onMounted(() => {
   getScore();
 })
+
 
 const ifshow = ref(false)
 
@@ -194,24 +195,19 @@ let isStarred = false;
     </div>
     <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
     <div style="text-align: center">
-      <el-icon style="background: #fce266">
-        <Star/>
-      </el-icon>
-      这里应该有评分
+      <el-rate
+          v-model="value"
+          disabled
+          show-score
+          text-color="#ff9900"
+          score-template="{value} points"
+      />
     </div>
     <!-- 收藏按钮 -->
-    <div style="text-align: center">
-      <div v-if="isFavorite">
-        <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
-          收藏
-        </el-button>
-      </div>
-      <div v-else>
-        <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
-          取消收藏
-        </el-button>
-      </div>
-
+    <div style="text-align: center" v-if="isFavorite">
+      <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
+        收藏
+      </el-button>
     </div>
     <div style="font-size: 0.7cm">电影详情:</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
