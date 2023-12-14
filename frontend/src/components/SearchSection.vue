@@ -1,5 +1,13 @@
 <template>
   <el-backtop :right="100" :bottom="100"/>
+  <el-input
+      v-model="searchInput"
+      class="w-50 m-2"
+      size="large"
+      placeholder="请输入电影名"
+      @input="searchMovies"
+      :suffix-icon="Search"
+    />
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange" style="margin: 0 10px 0 10px">
       <el-collapse-item title="类型" name="1">
@@ -81,6 +89,8 @@ import axios from "axios";
 
 const loading = ref(true);
 
+const searchInput = ref(''); // 新增的响应式属性，用于绑定搜索框的输入
+
 interface Movie {
   name: string;
   genre: string;
@@ -124,6 +134,16 @@ const findMovies = () => {
   }
   console.log(temp.value.length)
 }
+
+const searchMovies = () => {
+  temp.value = [];
+  for (const movie of movies.value) {
+    if (movie.name.includes(searchInput.value)) {
+      temp.value.push(movie);
+    }
+  }
+  console.log(temp.value.length);
+};
 
 const checkString = (movie) => {
   console.log(radio1.value)
