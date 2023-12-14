@@ -217,7 +217,7 @@
       <el-button @click="updateMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
+  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="目前还没有电影">
     <el-table-column prop="name" label="电影名" width="450"/>
     <el-table-column prop="genre" label="类型" width="250"/>
     <el-table-column prop="region" label="地区" width="200"/>

@@ -1,7 +1,7 @@
 <template>
-  <span style="font-size: 0.6cm">您可以在此查看并修改您的信息</span>
+  <span style="font-size: 0.6cm; margin-bottom: 50px">您可以在此查看并修改您的信息</span>
   <el-form :model="form" label-width="120px">
-    <el-form-item label="密码" style="margin-bottom: 50px">
+    <el-form-item label="密码" style="margin-bottom: 50px; margin-top: 50px">
       <el-input v-model="form.password" />
     </el-form-item>
     <el-form-item label="邮箱" style="margin-bottom: 50px">
