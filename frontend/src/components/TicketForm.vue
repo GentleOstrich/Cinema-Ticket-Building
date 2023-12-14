@@ -67,8 +67,21 @@ const deleteRow = (index: number) => {
     }
   )
     .then(() => {
-        ElMessage.success('退订成功');
-        tableData.value.splice(index, 1);
+      const id = tableData.value[index].id;
+      axios
+        .post(`/ticket/delete/${id}/`)
+        .then((res) => {
+          if (res.data.errno === 0) {
+            ElMessage.success('退订成功');
+            tableData.value.splice(index, 1);
+          } else {
+
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          ElMessage.error('系统错误');
+        });
     })
     .catch(() => {
 

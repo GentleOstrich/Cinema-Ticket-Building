@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-
+import {ElMessage, ElMessageBox} from "element-plus";
 import {useRoute, useRouter} from "vue-router";
 import axios from "axios";
 import SideColomn from "../components/SideColomn.vue";
-import {ElMessage, ElMessageBox} from "element-plus";
 
 const route = useRoute()
 const router = useRouter()
@@ -24,7 +23,7 @@ interface Broadcast {
 
 
 const broadcasts = ref<Broadcast[]>([]);
-const aim_broadcast = ref<Broadcast>()
+const aim_broadcast = ref<Broadcast>();
 
 async function fetchBroadcast() {
   try {
@@ -50,12 +49,24 @@ const seat = ref(null);
 const buy = (index) => {
   // 新建影票并传给后端
   // 修改放映座位信息
-  form.value.beginTime = aim_broadcast.value.beginTime
-  form.value.endTime = aim_broadcast.value.endTime
-  form.value.seats = aim_broadcast.value.seats.split("")
-  form.value.seats[index] = "1" // 修改第 index 个座位信息
-  form.value.seats = form.value.seats.join("")
-  updateBroadcast()
+  if(aim_broadcast.value){
+    axios
+        .post(`/ticket/create/${aim_broadcast.value.id}/${index}/`)
+        .then((res) => {
+          if (res.data.errno === 0) {
+            ElMessage.success('购票成功');
+            const arr = aim_broadcast.value!.seats.split("");
+            arr[index] = "1";
+            aim_broadcast.value!.seats = arr.join("");
+          } else {
+
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          ElMessage.error('系统错误');
+        });
+  }
 }
 
 interface Ticket {
@@ -73,38 +84,36 @@ const form = ref({
   seats: ''
 })
 
-const updateBroadcast = () => {
-  const id = aim_broadcast.value.id
-  const formData = new FormData();
-  for (const key in form.value) {
-    formData.append(key, form.value[key]);
-  }
-  axios
-      .post(`/broadcast/update/${id}/`, formData)
-      .then((res) => {
-        if (res.data.errno === 0) {
-          ElMessage.success('您已成功购票');
-          router.go(0)
-        } else {
-          form.value.beginTime = ''
-          form.value.endTime = ''
-          form.value.seats = ''
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        ElMessage.error('系统错误');
-      });
-}
+// const updateBroadcast = () => {
+//   const id = aim_broadcast.value.id
+//   const formData = new FormData();
+//   for (const key in form.value) {
+//     formData.append(key, form.value[key]);
+//   }
+//   axios
+//       .post(`/broadcast/update/${id}/`, formData)
+//       .then((res) => {
+//         if (res.data.errno === 0) {
+//           ElMessage.success('您已成功购票');
+//           router.go(0)
+//         } else {
+//           form.value.beginTime = ''
+//           form.value.endTime = ''
+//           form.value.seats = ''
+//         }
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//         ElMessage.error('系统错误');
+//       });
+// }
 
 
 </script>
 
 <template>
 
-
-  <el-container>
-    <el-aside width="500px" v-if="ifshow" style="margin-top: 100px">
+    <el-drawer v-model="ifshow" title="I am the title" :with-header="false">
       <el-divider style="background: black">屏幕</el-divider>
       <el-row justify="start">
         <el-col
@@ -120,9 +129,7 @@ const updateBroadcast = () => {
           </div>
         </el-col>
       </el-row>
-
-
-    </el-aside>
+    </el-drawer>
     <el-container>
       <el-header>
         <el-page-header @back="goBack" style="margin: 30px 0 0 20px;">
@@ -163,7 +170,6 @@ const updateBroadcast = () => {
         </el-row>
       </el-main>
     </el-container>
-  </el-container>
 </template>
 
 
