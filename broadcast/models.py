@@ -10,3 +10,4 @@ class Broadcast(models.Model):
     beginTime = models.CharField(max_length=20)
     endTime = models.CharField(max_length=20)
     seats = models.CharField(max_length=1000)
+    price = models.IntegerField(default=0)

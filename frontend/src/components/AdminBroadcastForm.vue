@@ -35,6 +35,15 @@
              >
           </el-input>
       </el-form-item>
+      <el-form-item label="票价" :label-width="'140px'">
+        <el-input
+              v-model="form.price"
+              class="w-50 m-2"
+              type="integer"
+              placeholder="请输入票价"
+             >
+          </el-input>
+      </el-form-item>
     </el-form>
       <el-button @click="addBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
@@ -82,6 +91,20 @@
           </el-input>
         </el-row>
       </div>
+      <div class="demo-input-suffix">
+        <el-row :gutter="20">
+      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
+      >票价</span
+      >
+          <el-input
+              v-model="form.price"
+              class="w-50 m-2"
+              placeholder="请输入票价"
+              type="integer"
+              style="margin: 10px 0 10px 0">
+          </el-input>
+        </el-row>
+      </div>
       <el-button @click="updateBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
@@ -89,6 +112,7 @@
     <el-table-column prop="hall_name" label="场馆名" width="450"/>
     <el-table-column prop="beginTime" label="开始时间" width="450"/>
     <el-table-column prop="endTime" label="结束时间" width="250"/>
+    <el-table-column prop="price" label="票价" width="250"/>
     <el-table-column prop="seats" label="座位码" width="200"/>
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
@@ -150,7 +174,8 @@ async function fetchData() {
 const form = ref({
   hall_name: '',
   beginTime: '',
-  endTime: ''
+  endTime: '',
+  price: 0
 })
 
 interface Broadcast {
@@ -158,6 +183,7 @@ interface Broadcast {
   hall_name: string;
   beginTime: string;
   endTime: string;
+  price: BigInt;
   seats: string;
 }
 
@@ -186,6 +212,7 @@ const addBroadcast = () => {
         } else {
           form.value.beginTime = ''
           form.value.endTime = ''
+          form.value.price = 0
         }
       })
       .catch((error) => {
@@ -211,6 +238,7 @@ const updateBroadcast = () => {
         } else {
           form.value.beginTime = ''
           form.value.endTime = ''
+          form.value.price = 0
         }
       })
       .catch((error) => {
