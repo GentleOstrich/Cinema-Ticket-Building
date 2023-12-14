@@ -13,7 +13,7 @@ const goBack = () => {
   router.back()
 }
 const score = ref(0.0)
-
+const myScore = score.value.toFixed()
 
 const addFavorite = () => {
   axios
@@ -96,6 +96,7 @@ async function fetchBroadcast() {
     comments.value = response2.data.data;
     movie.value = response3.data.data;
     score.value = response4.data.score;
+    score.value = Number(score.value.toFixed(2));
     isFavorite.value = response1.data.code !== 0;
     fullscreenLoading.value = false;
   } catch (error) {
