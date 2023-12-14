@@ -24,6 +24,7 @@ def index(request,movie_name):
                     'beginTime': broadcast.beginTime,
                     'endTime': broadcast.endTime,
                     'seats': broadcast.seats,
+                    'price': broadcast.price,
                 }
 
                 json_data.append(broadcast_dict)
@@ -40,8 +41,9 @@ def create(request,movie_name):
         beginTime = request.POST.get('beginTime')
         endTime = request.POST.get('endTime')
         seats = "0"*hall.seats_num
+        price = request.POST.get('price')
         broadcast = models.Broadcast.objects.create(movie=movie,hall=hall,beginTime=beginTime,
-        endTime=endTime,seats=seats) 
+        endTime=endTime,seats=seats,price=price) 
         broadcast.save()
         json_data = {
             'id': broadcast.id,
@@ -49,6 +51,7 @@ def create(request,movie_name):
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,
+            'price': broadcast.price,
         }
         return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Create Success"})
     else:
@@ -78,7 +81,9 @@ def update(request,id):
         endTime = request.POST.get('endTime')
         if endTime != '':
             broadcast.endTime = endTime
-        seats = request.POST.get('seats')
+        price = request.POST.get('price')
+        if price is not None:
+            broadcast.price = price
         broadcast.save()
         json_data = {
             'id': broadcast.id,
@@ -86,13 +91,9 @@ def update(request,id):
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,
+            'price': broadcast.price,
         }
         return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Update Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 
-
-
-
-
-# Create your views here.
