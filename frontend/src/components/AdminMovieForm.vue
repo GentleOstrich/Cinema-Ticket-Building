@@ -104,8 +104,7 @@
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >上传图片</span
-      >
+      >上传图片</span>
           <input type="file" @change="handleFileUpload">
         </el-row>
       </div>
@@ -211,17 +210,8 @@
       <div class="demo-input-suffix">
         <el-row :gutter="20">
         <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-        >上传图片</span
-        >
-          <el-input
-              v-model="form.image"
-              class="w-50 m-2"
-              placeholder="请上传图片"
-              autosize
-              type="file"
-              style="margin: 10px 0 10px 0"
-              @change="handleFileUpload">
-          </el-input>
+        >上传图片</span>
+        <input type="file" @change="handleFileUpload">
         </el-row>
       </div>
       <el-button @click="updateMovie" style="margin-left: 670px; margin-top: 30px">确定</el-button>
@@ -342,13 +332,16 @@ const updateMovie = () => {
     formData.append(key, form.value[key]);
   }
   axios
-      .post(`/movie/update/${old_name}/`, formData)
+      .post(`/movie/update/${old_name}/`, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       .then((res) => {
         if (res.data.errno === 0) {
           ElMessage.success('修改成功');
           tableData.value.splice(curIndex.value, 0, res.data.data);
           tableData.value.splice(curIndex.value + 1, 1);
-          console.log(tableData);
           dialogTableVisible1.value = false
         } else {
           if (res.data.errno === 1) ElMessage.error('电影名不能为空');

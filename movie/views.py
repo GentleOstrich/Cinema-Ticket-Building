@@ -102,6 +102,7 @@ def update(request,old_name):
             return JsonResponse({'errno': 2, 'msg': 'Repeated name'})
         elif movie is not None:
             image = request.FILES.get('image')
+            print(image)
             if image is not None:
                 movie.image = image.read()
             name = data.get('name')
