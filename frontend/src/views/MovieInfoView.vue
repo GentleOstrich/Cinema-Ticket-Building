@@ -298,7 +298,7 @@ let isStarred = false;
 
       <div class="comments">
         <div class="comment" v-for="comment in comments" :key="comment.id">
-          <span class="rating">评分：{{ comment.rating }}</span>
+          <span class="rating">评分：{{ comment.rating }}<br/></span>
           <span class="content">{{ comment.content }}</span>
         </div>
       </div>
