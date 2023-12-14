@@ -148,14 +148,10 @@ let isStarred = false;
       </el-col>
     </el-row>
   </el-drawer>
-  <el-container>
-    <el-header>
-      <el-page-header @back="goBack" style="margin: 30px 0 0 20px;">
 
-      </el-page-header>
-    </el-header>
+  <el-page-header @back="goBack" style="margin: 30px 0 0 20px;"></el-page-header>
 
-    <el-main>
+<div style="text-align: center; margin: 30px">
       <el-image
           :src=" 'data:image/jpeg;base64,' + movie_image"
           class="image"
@@ -163,40 +159,38 @@ let isStarred = false;
           fit="cover"
           style="max-width: 80%;max-height: 80%;width: auto;height: auto"
       />
-      <el-header style="font-size: 60px; margin-bottom: 10px">{{ movie_name }}</el-header>
+    </div>
+      <el-header style="font-size: 60px; text-align: center">{{ movie_name }}</el-header>
       <!-- 收藏按钮 -->
-
-      <el-button circle size="mini">
+      <el-button circle size="mini" style="margin: auto">
         收藏
       </el-button>
-
+  <div v-if="broadcasts.length > 0">
+    <div style="margin-left: 30px; font-size: 0.5cm">场次信息：</div>
       <!-- 卡片风格 -->
       <el-row justify="start" :gutter="30" style="margin-left: 50px;margin-right: 50px">
         <el-col
             v-for="broadcast in broadcasts"
             :span="6"
             style="flex: auto">
-          <el-card>
-            <el-text>
-              场馆名：{{ broadcast.hall_name }}
-            </el-text>
-            <el-text>
-              开始时间：{{ broadcast.beginTime }}
-            </el-text>
-            <el-text>
-              结束时间：{{ broadcast.endTime }}
-            </el-text>
-            <el-button v-if="!ifshow" style="margin-left: 100px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
+          <el-card style="height: 100px; margin: 30px 0 30px 0">
+            <el-text>场馆名：{{ broadcast.hall_name }}<br/></el-text>
+            <el-text>开始时间：{{ broadcast.beginTime }}<br/></el-text>
+            <el-text>结束时间：{{ broadcast.endTime }}</el-text>
+            <el-button style="margin-left: 100px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
               订票
-            </el-button>
-            <el-button v-else style="margin-left: 100px" @click="ifshow=!ifshow">
-              取消
             </el-button>
           </el-card>
         </el-col>
       </el-row>
-    </el-main>
-  </el-container>
+  </div>
+  <div v-else>
+    <el-empty description="抱歉，当前电影尚未安排场次">
+            <router-link to="/movies/index">
+              <el-button type="primary">返回首页</el-button>
+            </router-link>
+          </el-empty>
+        </div>
 
   <div class="comment-container">
     <el-rate

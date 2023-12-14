@@ -41,23 +41,23 @@
   <el-row justify="start" :gutter="20" style="margin: 20px">
     <el-col
         v-for="movie in temp"
-        :span="6"
+        :span="4"
         style="margin-top: 20px"
     >
       <div>
         <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name, movie_image:movie.image}}"
                      style="text-decoration: none; color: inherit">
-          <el-card :body-style="{ padding: '0px' }">
+          <el-card :body-style="{ padding: '0px' }" style="width: 190px">
             <el-image
                 :src=" 'data:image/jpeg;base64,' + movie.image"
                 class="image"
                 slot="error"
-                style="height: 160px"
+                style="height: 266px"
             />
             <div style="padding: 14px">
-              <span style="font-size: 0.7cm; margin-top: 5px">{{ movie.name }}<br/></span>
-              <span style="font-size: 0.3cm; color: rgb(128,128,128)">时长：{{ movie.lasting }}<br/></span>
-              <span style="font-size: 0.3cm; color: rgb(128,128,128)">国家/地区：{{ movie.region }}</span>
+              <span style="font-size: 0.4cm; margin-top: 5px">{{ movie.name }}<br/></span>
+              <span style="font-size: 0.2cm; color: rgb(128,128,128)">时长：{{ movie.lasting }}<br/></span>
+              <span style="font-size: 0.2cm; color: rgb(128,128,128)">国家/地区：{{ movie.region }}</span>
             </div>
           </el-card>
         </router-link>
