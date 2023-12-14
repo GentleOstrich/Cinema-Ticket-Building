@@ -50,8 +50,12 @@ def create(request,broadcast_id,seat):
 @csrf_exempt  # 跨域设置
 def delete(request,id):
     if request.method == 'POST':
-        ticket = models.Ticket.objects.filter(id=id)
-        if ticket.exists():
+        ticket = models.Ticket.objects.get(id=id)
+        if ticket is not None:
+            arr = list(ticket.broadcast.seats)
+            arr[ticket.seat] = "0"
+            ticket.broadcast.seats = "".join(arr)
+            ticket.broadcast.save()
             ticket.delete()     
             return JsonResponse({'errno': 0, 'msg': "Delete Success"})
         else:           
