@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有用户">
+  <el-table v-loading.fullscreen.lock="fullscreenLoading" :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有用户">
     <el-table-column prop="fields.username" label="用户名" width="500" />
     <el-table-column prop="fields.email" label="邮箱" width="500" />
     <el-table-column fixed="right" label="操作" width="500">
@@ -23,6 +23,8 @@ import { ref,onMounted } from 'vue'
 import { ElMessage,ElMessageBox } from "element-plus";
 import axios from 'axios';
 
+const fullscreenLoading = ref(true);
+
 interface User {
   fields: {
     username: string;
@@ -37,9 +39,12 @@ onMounted(fetchData);
 
 async function fetchData() {
   try {
+    fullscreenLoading.value = true;
     const response = await axios.get('/user/index');
     tableData.value = response.data.data;
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }

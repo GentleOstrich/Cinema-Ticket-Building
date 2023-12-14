@@ -108,7 +108,7 @@
       <el-button @click="updateBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有放映信息">
+  <el-table v-loading.fullscreen.lock="fullscreenLoading" :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有放映信息">
     <el-table-column prop="hall_name" label="场馆名" width="200"/>
     <el-table-column prop="beginTime" label="开始时间" width="200"/>
     <el-table-column prop="endTime" label="结束时间" width="200"/>
@@ -148,6 +148,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {useRoute} from "vue-router";
 import axios from 'axios';
 
+const fullscreenLoading = ref(true);
 
 const route = useRoute()
 const movie_name = ref('')
@@ -161,12 +162,15 @@ onMounted(fetchData);
 
 async function fetchData() {
   try {
+    fullscreenLoading.value = true;
     movie_name.value = route.query.movie_name as string
     const response = await axios.get(`/broadcast/index/${movie_name.value}`);
     tableData.value = response.data.data;
     const response_hall = await axios.get(`/hall/index/`);
     halls.value = response_hall.data.data;
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }
