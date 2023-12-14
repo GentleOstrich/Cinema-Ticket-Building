@@ -105,6 +105,7 @@ def delete(request):
         user = User.objects.filter(username=username)
         if user.exists():
             user.delete()
+            logout(request)
             return JsonResponse({'errno': 0, 'msg': "Delete Success"})
         else:
             return JsonResponse({'errno': 1, 'msg': 'Username not exist'})
