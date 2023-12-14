@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useRoute, useRouter} from "vue-router";
-import axios from "axios";
+import axios, {get} from "axios";
 import SideColomn from "../components/SideColomn.vue";
 import boolean from "async-validator/dist-types/validator/boolean";
 
@@ -14,7 +14,9 @@ let movie_image = ref(null)
 const goBack = () => {
   router.back()
 }
+const getScore = () => {
 
+}
 interface Broadcast {
   id: BigInt;
   hall_name: string;
@@ -41,6 +43,10 @@ async function fetchBroadcast() {
 
 onMounted(() => {
   fetchBroadcast();
+})
+
+onMounted(() => {
+  getScore();
 })
 
 const ifshow = ref(false)
@@ -151,7 +157,8 @@ let isStarred = false;
 
   <el-page-header @back="goBack" style="margin: 30px 0 0 20px;"></el-page-header>
 
-<div style="text-align: center; margin: 30px">
+  <el-card class="box-card" style="margin: 10px">
+    <div style="text-align: center; margin: 30px">
       <el-image
           :src=" 'data:image/jpeg;base64,' + movie_image"
           class="image"
@@ -160,12 +167,24 @@ let isStarred = false;
           style="max-width: 80%;max-height: 80%;width: auto;height: auto"
       />
     </div>
-      <el-header style="font-size: 60px; text-align: center">{{ movie_name }}</el-header>
+      <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
+      <div style="text-align: center"><el-icon style="background: #fce266"><Star /></el-icon>这里应该有评分</div>
       <!-- 收藏按钮 -->
-      <el-button circle size="mini" style="margin: auto">
+  <div style="text-align: center">
+      <el-button star size="mini" style="margin-top: 10px">
         收藏
-      </el-button>
-  <div v-if="broadcasts.length > 0">
+      </el-button></div>
+    <div style="font-size: 0.7cm">电影详情:</div>
+    <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
+    <div>年份：<br/></div>
+    <div>类型：<br/></div>
+    <div>语言：<br/></div>
+    <div>电影简介：</div>
+    </div>
+  </el-card>
+
+  <el-card class="box-card" style="margin: 10px">
+    <div v-if="broadcasts.length > 0">
     <div style="margin-left: 30px; font-size: 0.5cm">场次信息：</div>
       <!-- 卡片风格 -->
       <el-row justify="start" :gutter="30" style="margin-left: 50px;margin-right: 50px">
@@ -191,8 +210,11 @@ let isStarred = false;
             </router-link>
           </el-empty>
         </div>
+  </el-card>
 
+<el-card class="box-card" style="margin: 10px">
   <div class="comment-container">
+    <div>为电影打分吧：</div>
     <el-rate
         v-model="rating"
         :max="5"
@@ -204,7 +226,7 @@ let isStarred = false;
         v-model="content"
         placeholder="请输入评论内容"
     />
-    <el-button type="primary" @click="onSubmit">提交评论</el-button>
+    <el-button style="margin-top: 14px" type="primary" @click="onSubmit">提交评论</el-button>
 
     <div class="comments">
       <div class="comment" v-for="comment in comments" :key="comment.id">
@@ -213,6 +235,7 @@ let isStarred = false;
       </div>
     </div>
   </div>
+</el-card>
 </template>
 
 

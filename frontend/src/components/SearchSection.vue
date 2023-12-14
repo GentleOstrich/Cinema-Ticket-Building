@@ -47,17 +47,17 @@
       <div>
         <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name, movie_image:movie.image}}"
                      style="text-decoration: none; color: inherit">
-          <el-card :body-style="{ padding: '0px' }" style="width: 190px">
+          <el-card :body-style="{ padding: '0px' }" style="width: 200px">
             <el-image
                 :src=" 'data:image/jpeg;base64,' + movie.image"
                 class="image"
                 slot="error"
-                style="height: 266px"
+                style="height: 280px"
             />
             <div style="padding: 14px">
-              <span style="font-size: 0.4cm; margin-top: 5px">{{ movie.name }}<br/></span>
-              <span style="font-size: 0.2cm; color: rgb(128,128,128)">时长：{{ movie.lasting }}<br/></span>
-              <span style="font-size: 0.2cm; color: rgb(128,128,128)">国家/地区：{{ movie.region }}</span>
+              <span style="font-size: 0.45cm; margin-top: 5px">{{ movie.name }}<br/></span>
+              <span style="font-size: 0.25cm; color: rgb(128,128,128)">时长：{{ movie.lasting }}<br/></span>
+              <span style="font-size: 0.25cm; color: rgb(128,128,128)">国家/地区：{{ movie.region }}</span>
             </div>
           </el-card>
         </router-link>
