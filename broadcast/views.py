@@ -20,7 +20,7 @@ def index(request,movie_name):
             if broadcast.movie.name == movie_name:
                 broadcast_dict = {
                     'id': broadcast.id,
-                    'hall': broadcast.hall.name,
+                    'hall_name': broadcast.hall.name,
                     'beginTime': broadcast.beginTime,
                     'endTime': broadcast.endTime,
                     'seats': broadcast.seats,
@@ -45,7 +45,7 @@ def create(request,movie_name):
         broadcast.save()
         json_data = {
             'id': broadcast.id,
-            'hall': broadcast.hall.name,
+            'hall_name': broadcast.hall.name,
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,
@@ -87,7 +87,7 @@ def update(request,id):
         broadcast.save()
         json_data = {
             'id': broadcast.id,
-            'hall': broadcast.hall.name,
+            'hall_name': broadcast.hall.name,
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,

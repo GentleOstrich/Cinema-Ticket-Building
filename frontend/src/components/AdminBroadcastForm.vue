@@ -14,10 +14,10 @@
       >场馆</span>
         <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆" style="margin: 10px 0 10px 0">
           <el-option
-            v-for="hall_name in hall_names"
-            :key="hall_name"
-            :label="hall_name"
-            :value="hall_name"
+            v-for="hall in halls"
+            :key="hall.name"
+            :label="hall.name"
+            :value="hall.name"
           />
         </el-select>
         </el-row>
@@ -60,10 +60,10 @@
       >场馆</span>
         <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆" style="margin: 10px 0 10px 0">
           <el-option
-            v-for="hall_name in hall_names"
-            :key="hall_name"
-            :label="hall_name"
-            :value="hall_name"
+            v-for="hall in halls"
+            :key="hall.name"
+            :label="hall.name"
+            :value="hall.name"
           />
         </el-select>
         </el-row>
@@ -153,7 +153,7 @@ async function fetchData() {
     const response = await axios.get(`/broadcast/index/${movie_name.value}`);
     tableData.value = response.data.data;
     const response_hall = await axios.get(`/hall/index/`);
-    hall_names.value = response_hall.data.data;
+    halls.value = response_hall.data.data;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -173,9 +173,14 @@ interface Broadcast {
   seats: string;
 }
 
+interface Hall {
+  name: string;
+  seats_num: BigInt;
+}
+
 const tableData = ref<Broadcast[]>([]);
 
-const hall_names = ref([]);
+const halls = ref<Hall[]>([]);
 
 const addBroadcast = () => {
   const formData = new FormData();
