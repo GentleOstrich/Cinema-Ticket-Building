@@ -71,7 +71,7 @@ def score(request, movie_name):
         total_num = 0
         comments = models.Comment.objects.all()
         for comment in comments:
-            if comment.movie.name == movie_name:
+            if comment.rating != 0 and comment.movie.name == movie_name:
                 total_score += comment.rating
                 total_num += 1
         score = total_score*1.0/total_num
