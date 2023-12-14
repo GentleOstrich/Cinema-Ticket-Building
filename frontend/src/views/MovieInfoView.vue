@@ -204,7 +204,7 @@ let isStarred = false;
       />
     </div>
     <!-- 收藏按钮 -->
-    <div style="text-align: center" v-if="isFavorite">
+    <div style="text-align: center" v-if="!isFavorite">
       <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
         收藏
       </el-button>
