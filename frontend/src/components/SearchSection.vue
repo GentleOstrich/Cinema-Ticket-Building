@@ -36,9 +36,12 @@
     </el-collapse>
   </div>
 
-
+  <div style="position: relative;">
+  <div v-loading="loading" style="position: absolute; top: 100px; left: 0; right: 0; z-index: 10;">
+    <!-- 加载动画的容器，可能需要根据实际情况调整宽度和高度 -->
+  </div>
   <!-- 卡片风格 -->
-  <el-row justify="start" :gutter="20" style="margin: 20px">
+  <el-row justify="start" :gutter="20" style="margin: 20px; padding-top: 20px;">
     <el-col
         v-for="movie in temp"
         :span="4"
@@ -64,6 +67,7 @@
       </div>
     </el-col>
   </el-row>
+  </div>
 
 
 </template>
@@ -74,6 +78,8 @@ import {Search} from '@element-plus/icons-vue'
 import {onMounted} from "vue";
 
 import axios from "axios";
+
+const loading = ref(true);
 
 interface Movie {
   name: string;
@@ -90,11 +96,13 @@ onMounted(fetchData);
 
 async function fetchData() {
   try {
+    loading.value = true;
     const response = await axios.get('/movie/index');
     movies.value = response.data.data;
     myMovies.value = movies.value
-    console.log(movies.value[length - 1].image);
+    loading.value = false
   } catch (error) {
+    loading.value = false
     console.error('Error fetching data:', error);
   }
 }
@@ -202,6 +210,9 @@ const checkString = (movie) => {
 </script>
 
 <style>
+body {
+  margin: 0;
+}
 .example-showcase .el-loading-mask {
   z-index: 9;
 }

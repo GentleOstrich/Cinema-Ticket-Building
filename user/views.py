@@ -6,6 +6,7 @@ import json
 from django.contrib import auth
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
 
 # from models import User  # 引入数据库 User 对象
@@ -117,7 +118,7 @@ def update(request):
         password = data.get('password')
         email = data.get('email')
         user = request.user
-        user.password = password
+        user.password = make_password(password)
         user.email = email
         user.save()
         return JsonResponse({'errno': 0, 'msg': "Update Success"})
