@@ -16,6 +16,7 @@ def index(request,movie_name):
         json_data = []
         for broadcast in broadcasts:
             # 构造字典
+            print(broadcast.movie.name)
             if broadcast.movie.name == movie_name:
                 broadcast_dict = {
                     'id': broadcast.id,

@@ -4,26 +4,34 @@ import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import axios from "axios";
 import SideColomn from "../components/SideColomn.vue";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const route = useRoute()
 const router = useRouter()
 let movie_name = ref(null)
+let movie_image = ref(null)
+
 const goBack = () => {
   router.back()
 }
 
 interface Broadcast {
-  beginTime: String,
-  endTime: String
+  id: BigInt;
+  beginTime: string;
+  endTime: string;
+  seats: string;
 }
 
-const broadcasts = ref<Broadcast[]>([])
 
-async function fetchData() {
+const broadcasts = ref<Broadcast[]>([]);
+const aim_broadcast = ref<Broadcast>()
+
+async function fetchBroadcast() {
   try {
-    const response = await axios.get('/abababaabab');
+    movie_image.value = route.query.movie_image as string
+    movie_name.value = route.query.movie_name as string
+    const response = await axios.get(`/broadcast/index/${movie_name.value}`);
     broadcasts.value = response.data.data;
-    console.log(broadcasts.value[length - 1].image);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -31,23 +39,89 @@ async function fetchData() {
 
 
 onMounted(() => {
-  movie_name.value = route.query.movie_name
+  fetchBroadcast();
 })
 
-const getBroadcast = () => {
-
-}
 const ifshow = ref(false)
 
-const tests = ['星期一6点', '星期二8点', '星期三10点', '星期四9点', '星期五12点']
+
+const seat = ref(null);
+
+const buy = (index) => {
+  // 新建影票并传给后端
+  // 修改放映座位信息
+  form.value.beginTime = aim_broadcast.value.beginTime
+  form.value.endTime = aim_broadcast.value.endTime
+  form.value.seats = aim_broadcast.value.seats.split("")
+  form.value.seats[index] = "1" // 修改第 index 个座位信息
+  form.value.seats = form.value.seats.join("")
+  updateBroadcast()
+}
+
+interface Ticket {
+  id: BigInt;
+  movie_name: string;
+  beginTime: string;
+  endTime: string;
+  time: string;
+  seat: BigInt;
+}
+
+const form = ref({
+  beginTime: '',
+  endTime: '',
+  seats: ''
+})
+
+const updateBroadcast = () => {
+  const id = aim_broadcast.value.id
+  const formData = new FormData();
+  for (const key in form.value) {
+    formData.append(key, form.value[key]);
+  }
+  axios
+      .post(`/broadcast/update/${id}/`, formData)
+      .then((res) => {
+        if (res.data.errno === 0) {
+          ElMessage.success('您已成功购票');
+          router.go(0)
+        } else {
+          form.value.beginTime = ''
+          form.value.endTime = ''
+          form.value.seats = ''
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        ElMessage.error('系统错误');
+      });
+}
+
 
 </script>
 
 <template>
 
+
   <el-container>
-    <el-aside width="200px" v-if="ifshow">
-      显示信息
+    <el-aside width="500px" v-if="ifshow" style="margin-top: 100px">
+      <el-divider style="background: black">屏幕</el-divider>
+      <el-row justify="start">
+        <el-col
+            v-for="(i, index) in aim_broadcast.seats"
+            :span="6"
+        >
+          <div>
+            <el-button v-if="i == 0" style="background-color: navajowhite" @click="buy(index)"></el-button>
+            <el-button v-else style="background-color: orangered"
+                       @click="evt => ElMessageBox.alert('抱歉，此座位已售出')">
+            </el-button>
+
+          </div>
+        </el-col>
+      </el-row>
+
+
     </el-aside>
     <el-container>
       <el-header>
@@ -57,19 +131,28 @@ const tests = ['星期一6点', '星期二8点', '星期三10点', '星期四9�
       </el-header>
 
       <el-main>
-        <el-text size="large">
-          {{ movie_name }}
-        </el-text>
+        <el-image
+            :src=" 'data:image/jpeg;base64,' + movie_image"
+            class="image"
+            slot="error"
+            style="max-width: 100%;max-height: 100%;width: auto;height: auto"
+        />
+        <el-header style="font-size: 60px">{{ movie_name }}</el-header>
+
         <!-- 卡片风格 -->
         <el-row justify="start" :gutter="30" style="margin-left: 50px;margin-right: 50px">
           <el-col
-              v-for="test in tests"
-              :span="6">
+              v-for="broadcast in broadcasts"
+              :span="6"
+              style="flex: auto">
             <el-card>
               <el-text>
-                {{ test }}
+                开始时间：{{ broadcast.beginTime }}
               </el-text>
-              <el-button v-if="!ifshow" style="margin-left: 100px" @click="ifshow=!ifshow">
+              <el-text>
+                结束时间：{{ broadcast.endTime }}
+              </el-text>
+              <el-button v-if="!ifshow" style="margin-left: 100px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
                 订票
               </el-button>
               <el-button v-else style="margin-left: 100px" @click="ifshow=!ifshow">
@@ -95,7 +178,7 @@ const tests = ['星期一6点', '星期二8点', '星期三10点', '星期四9�
   background-color: #fffff;
   color: #333;
   text-align: center;
-  line-height: 200px;
+  line-height: 100px;
 }
 
 .el-main {

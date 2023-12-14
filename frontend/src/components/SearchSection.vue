@@ -1,4 +1,4 @@
-<template >
+<template>
   <el-backtop :right="100" :bottom="100"/>
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange">
@@ -37,7 +37,6 @@
   </div>
 
 
-
   <!-- 卡片风格 -->
   <el-row justify="start" :gutter="20" style="margin: 20px">
     <el-col
@@ -46,21 +45,21 @@
         style="margin-top: 20px"
     >
       <div>
-        <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name}}"
+        <router-link :to="{path:'/movies/index/movie_info', query:{movie_name:movie.name, movie_image:movie.image}}"
                      style="text-decoration: none; color: inherit">
           <el-card :body-style="{ padding: '0px' }">
-        <el-image
-          :src=" 'data:image/jpeg;base64,' + movie.image"
-          class="image"
-          slot="error"
-          style="height: 160px"
-        />
-        <div style="padding: 14px">
-          <span style="font-size: 0.7cm; margin-top: 5px">{{ movie.name }}<br/></span>
-          <span style="font-size: 0.3cm; color: rgb(128,128,128)">时长：{{movie.lasting}}<br/></span>
-          <span style="font-size: 0.3cm; color: rgb(128,128,128)">国家/地区：{{movie.region}}</span>
-        </div>
-      </el-card>
+            <el-image
+                :src=" 'data:image/jpeg;base64,' + movie.image"
+                class="image"
+                slot="error"
+                style="height: 160px"
+            />
+            <div style="padding: 14px">
+              <span style="font-size: 0.7cm; margin-top: 5px">{{ movie.name }}<br/></span>
+              <span style="font-size: 0.3cm; color: rgb(128,128,128)">时长：{{ movie.lasting }}<br/></span>
+              <span style="font-size: 0.3cm; color: rgb(128,128,128)">国家/地区：{{ movie.region }}</span>
+            </div>
+          </el-card>
         </router-link>
       </div>
     </el-col>
@@ -194,7 +193,7 @@ const checkString = (movie) => {
       r3 = true;
     }
   }
-  if(r1 && r2 && r3) {
+  if (r1 && r2 && r3) {
     temp.value.push(movie)
   }
 }
@@ -216,12 +215,14 @@ const checkString = (movie) => {
   box-sizing: border-box;
   vertical-align: top;
 }
+
 .demo-image__error .demonstration {
   display: block;
   color: var(--el-text-color-secondary);
   font-size: 14px;
   margin-bottom: 20px;
 }
+
 .demo-image__error .el-image {
   padding: 0 5px;
   max-width: 300px;
@@ -240,9 +241,11 @@ const checkString = (movie) => {
   color: var(--el-text-color-secondary);
   font-size: 30px;
 }
+
 .demo-image__error .image-slot .el-icon {
   font-size: 30px;
 }
+
 .image {
   width: 100%;
   display: block;

@@ -134,7 +134,6 @@ import {useRoute} from "vue-router";
 import axios from 'axios';
 
 
-
 const route = useRoute()
 const movie_name = ref('')
 const curIndex = ref(-1)
