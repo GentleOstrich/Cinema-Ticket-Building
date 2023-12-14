@@ -8,11 +8,45 @@
     >
     <el-dialog v-model="dialogTableVisible" title="新电影信息">
       <div>&nbsp;</div>
+      <el-form :model="form">
+
+      <el-form-item label="场馆" :label-width="'140px'">
+        <el-select v-model="form.hall_name"  placeholder="请选择场馆">
+          <el-option
+            v-for="hall in halls"
+            :key="hall.name"
+            :label="hall.name"
+            :value="hall.name"
+          />
+        </el-select>
+      </el-form-item>
+         <el-form-item label="开始时间" :label-width="'140px'">
+        <el-input
+              v-model="form.beginTime"
+              class="w-50 m-2"
+              placeholder="请输入开始时间"
+          />
+      </el-form-item>
+         <el-form-item label="结束时间" :label-width="'140px'">
+        <el-input
+              v-model="form.endTime"
+              class="w-50 m-2"
+              placeholder="请输入结束时间"
+             >
+          </el-input>
+      </el-form-item>
+    </el-form>
+      <el-button @click="addBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
+    </el-dialog>
+
+    <el-dialog v-model="dialogTableVisible1" title="修改电影信息">
+      <div style="font-size: 0.5cm">请您重新编辑已有电影的相关信息</div>
+      <div>&nbsp;</div>
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
       >场馆</span>
-        <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆（信息发布后不可修改场馆）" style="margin: 10px 0 10px 0">
+        <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆" style="margin: 10px 0 10px 0">
           <el-option
             v-for="hall in halls"
             :key="hall.name"
@@ -22,38 +56,6 @@
         </el-select>
         </el-row>
       </div>
-      <div class="demo-input-suffix">
-        <el-row :gutter="20">
-      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >开始时间</span
-      >
-          <el-input
-              v-model="form.beginTime"
-              class="w-50 m-2"
-              placeholder="请输入开始时间"
-              style="margin: 10px 0 10px 0"
-          />
-        </el-row>
-      </div>
-      <div class="demo-input-suffix">
-        <el-row :gutter="20">
-      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >结束时间</span
-      >
-          <el-input
-              v-model="form.endTime"
-              class="w-50 m-2"
-              placeholder="请输入结束时间"
-              style="margin: 10px 0 10px 0">
-          </el-input>
-        </el-row>
-      </div>
-      <el-button @click="addBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
-    </el-dialog>
-
-    <el-dialog v-model="dialogTableVisible1" title="修改电影信息">
-      <div style="font-size: 0.5cm">请您重新编辑已有电影的相关信息</div>
-      <div>&nbsp;</div>
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
