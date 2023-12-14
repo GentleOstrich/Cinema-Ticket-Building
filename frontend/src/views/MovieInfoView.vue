@@ -45,7 +45,7 @@ const deleteFavorite = () => {
         if (res.data.errno === 0) {
           isFavorite.value = !isFavorite.value
           ElMessage({
-            message: '收藏成功！',
+            message: '已取消收藏！',
             type: 'success',
           })
 
@@ -65,6 +65,7 @@ interface Broadcast {
   beginTime: string;
   endTime: string;
   seats: string;
+  price: BigInt;
 }
 
 interface Movie {
@@ -270,11 +271,12 @@ let isStarred = false;
             v-for="broadcast in broadcasts"
             :span="6"
             style="flex: auto">
-          <el-card style="height: 100px; margin: 30px 0 30px 0">
+          <el-card style="height: 150px; margin: 30px 0 30px 0">
             <el-text>场馆名：{{ broadcast.hall_name }}<br/></el-text>
             <el-text>开始时间：{{ broadcast.beginTime }}<br/></el-text>
             <el-text>结束时间：{{ broadcast.endTime }}</el-text>
-            <el-button style="margin-left: 100px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
+            <el-text style="margin-left: 60px; color:orangered; font-size: 0.5cm">￥{{broadcast.price}}<br/></el-text>
+            <el-button type="success" style="margin-left: 100px; margin-top: 10px" @click="ifshow=!ifshow, aim_broadcast=broadcast">
               订票
             </el-button>
           </el-card>
