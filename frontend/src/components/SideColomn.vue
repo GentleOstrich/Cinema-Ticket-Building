@@ -13,7 +13,7 @@
             </span>
         </el-menu-item>
         <el-menu-item index="2">
-            <el-icon><Star /></el-icon>
+            <el-icon><Film /></el-icon>
             <span><router-link to="/home/userticket" 
                 style="text-decoration: none; 
                 color: inherit; 
@@ -41,6 +41,7 @@
 import {
   Menu as IconMenu,
   Star,
+  Film,
   Setting,
 } from '@element-plus/icons-vue'
 const handleOpen = (key: string, keyPath: string[]) => {

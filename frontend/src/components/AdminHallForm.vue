@@ -71,7 +71,7 @@
       <el-button @click="updateHall" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
+  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有场馆">
     <el-table-column prop="name" label="场馆名" width="450"/>
     <el-table-column prop="seats_num" label="座位数" width="250"/>
     <el-table-column fixed="right" label="操作" width="400">

@@ -8,7 +8,7 @@
         <el-aside width="200px">
           <SideColomn></SideColomn>
         </el-aside>
-        <el-main>
+        <el-main style="line-height: unset">
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -20,5 +20,8 @@
 import TopColomn from '../components/TopColomn.vue';
 import SideColomn from '../components/SideColomn.vue';
 </script>
+
+<style>
+</style>
 
 

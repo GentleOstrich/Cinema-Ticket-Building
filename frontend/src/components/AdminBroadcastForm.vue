@@ -85,7 +85,7 @@
       <el-button @click="updateBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
+  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有放映信息">
     <el-table-column prop="hall_name" label="场馆名" width="450"/>
     <el-table-column prop="beginTime" label="开始时间" width="450"/>
     <el-table-column prop="endTime" label="结束时间" width="250"/>

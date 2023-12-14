@@ -17,7 +17,7 @@ const goBack = () => {
 const getScore = () => {
 
 }
-
+const value = ref(3.7)
 const addFavorite = () => {
   axios
     .post(`favorite/create/${movie_name.value}/`)
@@ -187,7 +187,13 @@ let isStarred = false;
       />
     </div>
       <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
-      <div style="text-align: center"><el-icon style="background: #fce266"><Star /></el-icon>这里应该有评分</div>
+      <div style="text-align: center"> <el-rate
+      v-model="value"
+      disabled
+      show-score
+      text-color="#ff9900"
+      score-template="{value} points"
+  /></div>
       <!-- 收藏按钮 -->
   <div style="text-align: center">
       <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">

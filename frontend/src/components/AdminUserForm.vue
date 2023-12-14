@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
+  <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed" empty-text="没有用户">
     <el-table-column prop="fields.username" label="用户名" width="500" />
     <el-table-column prop="fields.email" label="邮箱" width="500" />
     <el-table-column fixed="right" label="操作" width="500">
