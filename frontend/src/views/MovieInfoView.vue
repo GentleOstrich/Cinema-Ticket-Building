@@ -80,7 +80,10 @@ async function fetchBroadcast() {
     movie_name.value = route.query.movie_name as string
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
+    const response2 = await axios.get(`/comment/index/`)
     broadcasts.value = response.data.data;
+    comments.value = response2.data.data;
+    console.log(comments.value)
     isFavorite.value = response1.data.code !== 0;
     console.log(isFavorite.value)
     fullscreenLoading.value = false;
@@ -226,16 +229,16 @@ let isStarred = false;
     </div>
     <!-- 收藏按钮 -->
     <div v-loading.fullscreen.lock="fullscreenLoading">
-    <div style="text-align: center" v-if="!isFavorite">
-      <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
-        收藏
-      </el-button>
-    </div>
-    <div style="text-align: center" v-if="isFavorite">
-      <el-button star size="mini" style="margin-top: 10px" @click="deleteFavorite">
-        取消收藏
-      </el-button>
-    </div>
+      <div style="text-align: center" v-if="!isFavorite">
+        <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
+          收藏
+        </el-button>
+      </div>
+      <div style="text-align: center" v-if="isFavorite">
+        <el-button star size="mini" style="margin-top: 10px" @click="deleteFavorite">
+          取消收藏
+        </el-button>
+      </div>
     </div>
     <div style="font-size: 0.7cm">电影详情:</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
