@@ -9,13 +9,13 @@ from . import models
 
 # Create your views here.
 @csrf_exempt  # 跨域设置
-def index(request):
+def index(request, movie_name):
     if request.method == 'GET':
         comments = models.Comment.objects.all()
         json_data = []
         for comment in comments:
             # 构造字典
-            if comment.movie.name == request.movie.name:
+            if comment.movie.name == movie_name:
                 comment_dict = {
                     'id': comment.id,
                     'username': comment.user.username,
@@ -44,7 +44,7 @@ def create(request, movie_name):
             'time': comment.time,
             'content': comment.content
         }
-        return JsonResponse({'errno': 0, 'data':json_data, 'msg': "Create Comment Success"})
+        return JsonResponse({'errno': 0, 'data': json_data, 'msg': "Create Comment Success"})
     else:
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 

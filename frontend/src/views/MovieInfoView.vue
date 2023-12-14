@@ -80,7 +80,7 @@ async function fetchBroadcast() {
     movie_name.value = route.query.movie_name as string
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
-    const response2 = await axios.get(`/comment/index/`)
+    const response2 = await axios.get(`/comment/index/${movie_name.value}/`)
     broadcasts.value = response.data.data;
     comments.value = response2.data.data;
     console.log(comments.value)
@@ -195,7 +195,8 @@ let isStarred = false;
           :span="3"
       >
         <div style="margin-top: 10px">
-          <el-button v-if="i == 0" style="background-color: navajowhite; margin-left: 10px" @click="buy(index)"></el-button>
+          <el-button v-if="i == 0" style="background-color: navajowhite; margin-left: 10px"
+                     @click="buy(index)"></el-button>
           <el-button v-else style="background-color: orangered; margin-left: 10px"
                      @click="evt => ElMessageBox.alert('抱歉，此座位已售出')">
           </el-button>
