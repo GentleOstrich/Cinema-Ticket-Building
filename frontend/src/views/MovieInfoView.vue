@@ -17,25 +17,27 @@ const goBack = () => {
 const getScore = () => {
 
 }
-const value = ref(3.7)
+
+
 const addFavorite = () => {
   axios
-    .post(`favorite/create/${movie_name.value}/`)
-    .then((res) => {
-          if (res.data.errno === 0) {
-            ElMessage({
-              message: '收藏成功！',
-              type: 'success',
-            })
-          } else {
+      .post(`favorite/create/${movie_name.value}/`)
+      .then((res) => {
+        if (res.data.errno === 0) {
+          ElMessage({
+            message: '收藏成功！',
+            type: 'success',
+          })
+        } else {
 
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          ElMessage.error('系统错误');
-        });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        ElMessage.error('系统错误');
+      });
 }
+
 interface Broadcast {
   id: BigInt;
   hall_name: string;
@@ -48,12 +50,16 @@ interface Broadcast {
 const broadcasts = ref<Broadcast[]>([]);
 const aim_broadcast = ref<Broadcast>();
 
+const isFavorite = ref(false);
+
 async function fetchBroadcast() {
   try {
     movie_image.value = route.query.movie_image as string
     movie_name.value = route.query.movie_name as string
-    const response = await axios.get(`/broadcast/index/${movie_name.value}`);
+    const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
+    const response1 = await axios.get('/favorite/isFavorite/${movie_name.value}/');
     broadcasts.value = response.data.data;
+    isFavorite.value = response1.data.code !== '0';
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -186,31 +192,39 @@ let isStarred = false;
           style="max-width: 80%;max-height: 80%;width: auto;height: auto"
       />
     </div>
-      <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
-      <div style="text-align: center"> <el-rate
-      v-model="value"
-      disabled
-      show-score
-      text-color="#ff9900"
-      score-template="{value} points"
-  /></div>
-      <!-- 收藏按钮 -->
-  <div style="text-align: center">
-      <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
-        收藏
-      </el-button></div>
+    <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
+    <div style="text-align: center">
+      <el-icon style="background: #fce266">
+        <Star/>
+      </el-icon>
+      这里应该有评分
+    </div>
+    <!-- 收藏按钮 -->
+    <div style="text-align: center">
+      <div v-if="isFavorite">
+        <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
+          收藏
+        </el-button>
+      </div>
+      <div v-else>
+        <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
+          取消收藏
+        </el-button>
+      </div>
+
+    </div>
     <div style="font-size: 0.7cm">电影详情:</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
-    <div>年份：<br/></div>
-    <div>类型：<br/></div>
-    <div>语言：<br/></div>
-    <div>电影简介：</div>
+      <div>年份：<br/></div>
+      <div>类型：<br/></div>
+      <div>语言：<br/></div>
+      <div>电影简介：</div>
     </div>
   </el-card>
 
   <el-card class="box-card" style="margin: 10px">
     <div v-if="broadcasts.length > 0">
-    <div style="margin-left: 30px; font-size: 0.5cm">场次信息：</div>
+      <div style="margin-left: 30px; font-size: 0.5cm">场次信息：</div>
       <!-- 卡片风格 -->
       <el-row justify="start" :gutter="30" style="margin-left: 50px;margin-right: 50px">
         <el-col
@@ -227,40 +241,40 @@ let isStarred = false;
           </el-card>
         </el-col>
       </el-row>
-  </div>
-  <div v-else>
-    <el-empty description="抱歉，当前电影尚未安排场次">
-            <router-link to="/movies/index">
-              <el-button type="primary">返回首页</el-button>
-            </router-link>
-          </el-empty>
-        </div>
+    </div>
+    <div v-else>
+      <el-empty description="抱歉，当前电影尚未安排场次">
+        <router-link to="/movies/index">
+          <el-button type="primary">返回首页</el-button>
+        </router-link>
+      </el-empty>
+    </div>
   </el-card>
 
-<el-card class="box-card" style="margin: 10px">
-  <div class="comment-container">
-    <div>为电影打分吧：</div>
-    <el-rate
-        v-model="rating"
-        :max="5"
-        show-score
-        show-text
-        @change="onRatingChange"
-    />
-    <el-input
-        v-model="content"
-        placeholder="请输入评论内容"
-    />
-    <el-button style="margin-top: 14px" type="primary" @click="onSubmit">提交评论</el-button>
+  <el-card class="box-card" style="margin: 10px">
+    <div class="comment-container">
+      <div>为电影打分吧：</div>
+      <el-rate
+          v-model="rating"
+          :max="5"
+          show-score
+          show-text
+          @change="onRatingChange"
+      />
+      <el-input
+          v-model="content"
+          placeholder="请输入评论内容"
+      />
+      <el-button style="margin-top: 14px" type="primary" @click="onSubmit">提交评论</el-button>
 
-    <div class="comments">
-      <div class="comment" v-for="comment in comments" :key="comment.id">
-        <span class="rating">评分：{{ comment.rating }}</span>
-        <span class="content">{{ comment.content }}</span>
+      <div class="comments">
+        <div class="comment" v-for="comment in comments" :key="comment.id">
+          <span class="rating">评分：{{ comment.rating }}</span>
+          <span class="content">{{ comment.content }}</span>
+        </div>
       </div>
     </div>
-  </div>
-</el-card>
+  </el-card>
 </template>
 
 
