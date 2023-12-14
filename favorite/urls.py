@@ -4,6 +4,6 @@ from .views import *
 urlpatterns = [
     path('index/', index),
     path('create/<str:movie_name>/',create),
-    path('delete/<int:id>/',delete),
+    path('delete/<str:movie_name>/',delete),
     path('isFavorite/<str:movie_name>/',isFavorite),
 ]

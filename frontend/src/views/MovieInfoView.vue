@@ -14,9 +14,6 @@ let movie_image = ref('')
 const goBack = () => {
   router.back()
 }
-const getScore = () => {
-
-}
 const value = ref(3.7)
 
 
@@ -42,7 +39,24 @@ const addFavorite = () => {
 }
 
 const deleteFavorite = () => {
+  axios
+      .post(`favorite/delete/${movie_name.value}/`)
+      .then((res) => {
+        if (res.data.errno === 0) {
+          isFavorite.value = !isFavorite.value
+          ElMessage({
+            message: '收藏成功！',
+            type: 'success',
+          })
 
+        } else {
+
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        ElMessage.error('系统错误');
+      });
 }
 
 interface Broadcast {
@@ -57,17 +71,21 @@ interface Broadcast {
 const broadcasts = ref<Broadcast[]>([]);
 const aim_broadcast = ref<Broadcast>();
 const isFavorite = ref(false);
+const fullscreenLoading = ref(true);
 
 async function fetchBroadcast() {
   try {
+    fullscreenLoading.value = true;
     movie_image.value = route.query.movie_image as string
     movie_name.value = route.query.movie_name as string
     const response = await axios.get(`/broadcast/index/${movie_name.value}/`);
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
     broadcasts.value = response.data.data;
-    isFavorite.value = response1.data.code !== '0';
+    isFavorite.value = response1.data.code !== 0;
     console.log(isFavorite.value)
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }
@@ -75,7 +93,6 @@ async function fetchBroadcast() {
 
 onMounted(() => {
   fetchBroadcast();
-  getScore();
 })
 
 
@@ -208,6 +225,7 @@ let isStarred = false;
       />
     </div>
     <!-- 收藏按钮 -->
+    <div v-loading.fullscreen.lock="fullscreenLoading">
     <div style="text-align: center" v-if="!isFavorite">
       <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
         收藏
@@ -217,6 +235,7 @@ let isStarred = false;
       <el-button star size="mini" style="margin-top: 10px" @click="deleteFavorite">
         取消收藏
       </el-button>
+    </div>
     </div>
     <div style="font-size: 0.7cm">电影详情:</div>
     <div class="movieInfo" style="font-size: 0.4cm; margin:14px; color: gray">
