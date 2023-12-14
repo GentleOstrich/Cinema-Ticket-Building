@@ -12,7 +12,7 @@ let movie_image = ref('')
 const goBack = () => {
   router.back()
 }
-const value = ref(3.7)
+const score = ref(0.0)
 
 
 const addFavorite = () => {
@@ -91,12 +91,12 @@ async function fetchBroadcast() {
     const response1 = await axios.get(`/favorite/isFavorite/${movie_name.value}/`);
     const response2 = await axios.get(`/comment/index/${movie_name.value}/`)
     const response3 = await axios.get(`/movie/show/${movie_name.value}/`);
+    const response4 = await axios.get(`/comment/score/${movie_name.value}/`);
     broadcasts.value = response.data.data;
     comments.value = response2.data.data;
     movie.value = response3.data.data;
-    console.log(comments.value)
+    score.value = response4.data.score;
     isFavorite.value = response1.data.code !== 0;
-    console.log(isFavorite.value)
     fullscreenLoading.value = false;
   } catch (error) {
     fullscreenLoading.value = false;
@@ -239,7 +239,7 @@ function onContentChange() {
     <el-header style="font-size: 1cm; text-align: center">{{ movie_name }}<br/></el-header>
     <div style="text-align: center">
       <el-rate
-          v-model="value"
+          v-model="score"
           disabled
           show-score
           text-color="#ff9900"

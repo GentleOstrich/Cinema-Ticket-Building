@@ -63,3 +63,18 @@ def delete(request, id):
             return JsonResponse({'errno': 1, 'msg': 'Comment not exist'})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
+
+@csrf_exempt  # 跨域设置
+def score(request, movie_name):
+    if request.method == 'GET':
+        total_score = 0.0
+        total_num = 0
+        comments = models.Comment.objects.all()
+        for comment in comments:
+            if comment.movie.name == movie_name:
+                total_score += comment.rating
+                total_num += 1
+        score = total_score*1.0/total_num
+        return JsonResponse({'errno': 0, 'score': score})
+    else:
+        return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
