@@ -48,9 +48,11 @@ def create(request,movie_name):
         return JsonResponse({'errno': 3, 'msg': "Wrong Request"})
 
 @csrf_exempt  # 跨域设置
-def delete(request,id):
+def delete(request,movie_name):
     if request.method == 'POST':
-        favorite = models.Favorite.objects.get(id=id)
+        user = request.user
+        movie = models.Movie.objects.get(name=movie_name)
+        favorite = models.Favorite.objects.get(user=user,movie=movie)
         if favorite is not None:
             favorite.delete()     
             return JsonResponse({'errno': 0, 'msg': "Delete Success"})

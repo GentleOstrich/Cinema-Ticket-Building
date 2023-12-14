@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     'broadcast',
     'ticket',
     'hall',
-    'favorite'
+    'favorite',
+    'comment'
 ]
 
 CORS_ALLOW_CREDENTIALS = True

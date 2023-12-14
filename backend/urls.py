@@ -10,5 +10,6 @@ urlpatterns = [
     path('api/ticket/', include(('ticket.urls', 'ticket'))),
     path('api/hall/', include(('hall.urls', 'hall'))),
     path('api/favorite/', include(('favorite.urls', 'favorite'))),
+    path('api/comment/', include(('favorite.urls', 'favorite'))),
     path(r'', TemplateView.as_view(template_name='index.html'))
 ]
