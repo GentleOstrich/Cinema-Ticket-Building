@@ -8,7 +8,7 @@
                 padding-right: 99px; 
                 padding-top: 25px; 
                 padding-bottom: 10px;">
-                    个人信息
+                    修改信息
                 </router-link>
             </span>
         </el-menu-item>

@@ -41,6 +41,10 @@ const addFavorite = () => {
       });
 }
 
+const deleteFavorite = () => {
+
+}
+
 interface Broadcast {
   id: BigInt;
   hall_name: string;
@@ -207,6 +211,11 @@ let isStarred = false;
     <div style="text-align: center" v-if="!isFavorite">
       <el-button star size="mini" style="margin-top: 10px" @click="addFavorite">
         收藏
+      </el-button>
+    </div>
+    <div style="text-align: center" v-if="isFavorite">
+      <el-button star size="mini" style="margin-top: 10px" @click="deleteFavorite">
+        取消收藏
       </el-button>
     </div>
     <div style="font-size: 0.7cm">电影详情:</div>
