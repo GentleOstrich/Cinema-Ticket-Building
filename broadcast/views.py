@@ -20,6 +20,7 @@ def index(request,movie_name):
             if broadcast.movie.name == movie_name:
                 broadcast_dict = {
                     'id': broadcast.id,
+                    'hall': broadcast.hall.name,
                     'beginTime': broadcast.beginTime,
                     'endTime': broadcast.endTime,
                     'seats': broadcast.seats,
@@ -34,14 +35,17 @@ def index(request,movie_name):
 def create(request,movie_name):
     if request.method == 'POST':
         movie = models.Movie.objects.get(name=movie_name)
+        hall_name = request.POST.get('hall_name')
+        hall = models.Hall.objects.get(name=hall_name)
         beginTime = request.POST.get('beginTime')
         endTime = request.POST.get('endTime')
-        seats = request.POST.get('seats')
-        broadcast = models.Broadcast.objects.create(movie=movie,beginTime=beginTime,
+        seats = "0"*hall.seats_num
+        broadcast = models.Broadcast.objects.create(movie=movie,hall=hall,beginTime=beginTime,
         endTime=endTime,seats=seats) 
         broadcast.save()
         json_data = {
             'id': broadcast.id,
+            'hall': broadcast.hall.name,
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,
@@ -68,6 +72,11 @@ def delete(request,id):
 def update(request,id):
     if request.method == 'POST':
         broadcast = models.Broadcast.objects.get(id=id)
+        hall_name = request.POST.get('hall_name')
+        if hall_name != '':
+            hall = models.Hall.objects.get(name=hall_name)
+            broadcast.hall = hall
+            broadcast.seats = "0"*hall.seats_num
         beginTime = request.POST.get('beginTime')
         if beginTime != '':
             broadcast.beginTime = beginTime
@@ -75,11 +84,10 @@ def update(request,id):
         if endTime != '':
             broadcast.endTime = endTime
         seats = request.POST.get('seats')
-        if seats != '':
-            broadcast.seats = seats
         broadcast.save()
         json_data = {
             'id': broadcast.id,
+            'hall': broadcast.hall.name,
             'beginTime': broadcast.beginTime,
             'endTime': broadcast.endTime,
             'seats': broadcast.seats,

@@ -10,6 +10,7 @@ import MainView from "@/views/MainView.vue";
 import AdminView from '../views/AdminView.vue'
 import AdminReject from '../components/AdminReject.vue'
 import AdminEnter from "@/components/AdminEnter.vue";
+import AdminHallForm from "@/components/AdminHallForm.vue";
 import AdminMovieForm from "@/components/AdminMovieForm.vue";
 import AdminUserForm from "@/components/AdminUserForm.vue";
 import MovieInfoView from "@/views/MovieInfoView.vue";
@@ -80,6 +81,11 @@ const router = createRouter({
                     path: '/admin/home',
                     name: 'admin/home',
                     component: AdminEnter
+                },
+                {
+                    path: '/admin/halls',
+                    name: 'admin/halls',
+                    component: AdminHallForm
                 },
                 {
                     path: '/admin/movies',

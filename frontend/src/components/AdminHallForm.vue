@@ -1,36 +1,22 @@
 <template>
   <el-backtop :right="100" :bottom="100"/>
-  <div style="font-size: 0.6cm; margin: 30px 0 0 50px">您可以在这里新加放映信息</div>
+  <div style="font-size: 0.6cm; margin: 30px 0 0 50px">您可以在这里新建场馆</div>
   <div style="text-align: center; margin-top: 30px">
     <el-button class="mt-4" style="width: 30%; margin-right: 30px" @click="dialogTableVisible = true"
-    >添加放映信息
+    >新建场馆
     </el-button
     >
-    <el-dialog v-model="dialogTableVisible" title="新电影信息">
+    <el-dialog v-model="dialogTableVisible" title="新建场馆">
       <div>&nbsp;</div>
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >场馆</span>
-        <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆" style="margin: 10px 0 10px 0">
-          <el-option
-            v-for="hall_name in hall_names"
-            :key="hall_name"
-            :label="hall_name"
-            :value="hall_name"
-          />
-        </el-select>
-        </el-row>
-      </div>
-      <div class="demo-input-suffix">
-        <el-row :gutter="20">
-      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >开始时间</span
+      >场馆名</span
       >
           <el-input
-              v-model="form.beginTime"
+              v-model="form.name"
               class="w-50 m-2"
-              placeholder="请输入开始时间"
+              placeholder="请输入场馆名"
               style="margin: 10px 0 10px 0"
           />
         </el-row>
@@ -38,17 +24,18 @@
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >结束时间</span
+      >座位数</span
       >
           <el-input
-              v-model="form.endTime"
+              v-model="form.seats_num"
               class="w-50 m-2"
-              placeholder="请输入结束时间"
+              placeholder="请输入座位数"
+              type="integer"
               style="margin: 10px 0 10px 0">
           </el-input>
         </el-row>
       </div>
-      <el-button @click="addBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
+      <el-button @click="addHall" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
 
     <el-dialog v-model="dialogTableVisible1" title="修改电影信息">
@@ -57,26 +44,12 @@
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >场馆</span>
-        <el-select v-model="form.hall_name" class="w-50 m-2" placeholder="请选择场馆" style="margin: 10px 0 10px 0">
-          <el-option
-            v-for="hall_name in hall_names"
-            :key="hall_name"
-            :label="hall_name"
-            :value="hall_name"
-          />
-        </el-select>
-        </el-row>
-      </div>
-      <div class="demo-input-suffix">
-        <el-row :gutter="20">
-      <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >开始时间</span
+      >场馆名</span
       >
           <el-input
-              v-model="form.beginTime"
+              v-model="form.name"
               class="w-50 m-2"
-              placeholder="请输入开始时间"
+              placeholder="请输入场馆名"
               style="margin: 10px 0 10px 0"
           />
         </el-row>
@@ -84,24 +57,23 @@
       <div class="demo-input-suffix">
         <el-row :gutter="20">
       <span class="ml-3 w-35 text-gray-600 inline-flex items-center"
-      >结束时间</span
+      >座位数</span
       >
           <el-input
-              v-model="form.endTime"
+              v-model="form.seats_num"
               class="w-50 m-2"
-              placeholder="请输入结束时间"
+              placeholder="请输入电影类型"
+              type="integer"
               style="margin: 10px 0 10px 0">
           </el-input>
         </el-row>
       </div>
-      <el-button @click="updateBroadcast" style="margin-left: 670px; margin-top: 30px">确定</el-button>
+      <el-button @click="updateHall" style="margin-left: 670px; margin-top: 30px">确定</el-button>
     </el-dialog>
   </div>
   <el-table :data="tableData" style="width: 10000px; margin-left: 20px; margin-top: 50px" table-layout="fixed">
-    <el-table-column prop="hall_name" label="场馆名" width="450"/>
-    <el-table-column prop="beginTime" label="开始时间" width="450"/>
-    <el-table-column prop="endTime" label="结束时间" width="250"/>
-    <el-table-column prop="seats" label="座位码" width="200"/>
+    <el-table-column prop="name" label="场馆名" width="450"/>
+    <el-table-column prop="seats_num" label="座位数" width="250"/>
     <el-table-column fixed="right" label="操作" width="400">
       <template #default="scope">
         <el-button
@@ -110,7 +82,7 @@
             size="small"
             @click.prevent="updateRow(scope.$index)"
         >
-          修改放映信息
+          修改场馆信息
         </el-button>
 
         <el-button
@@ -120,7 +92,7 @@
             style="color: red"
             @click.prevent="deleteRow(scope.$index)"
         >
-          删除放映信息
+          删除场馆
         </el-button>
 
       </template>
@@ -133,66 +105,43 @@
 <script lang="ts" setup>
 import {ref, onMounted} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
-import {useRoute} from "vue-router";
 import axios from 'axios';
-
-
-const route = useRoute()
-const movie_name = ref('')
-const curIndex = ref(-1)
 
 const dialogTableVisible = ref(false)
 const dialogTableVisible1 = ref(false)
 
-// 在组件加载时获取数据
-onMounted(fetchData);
-
-async function fetchData() {
-  try {
-    movie_name.value = route.query.movie_name as string
-    const response = await axios.get(`/broadcast/index/${movie_name.value}`);
-    tableData.value = response.data.data;
-    const response_hall = await axios.get(`/hall/index/`);
-    hall_names.value = response_hall.data.data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-}
+const curIndex = ref(-1)
 
 const form = ref({
-  hall_name: '',
-  beginTime: '',
-  endTime: ''
+  name: '',
+  seats_num: 0,
 })
 
-interface Broadcast {
-  id: BigInt;
-  hall_name: string;
-  beginTime: string;
-  endTime: string;
-  seats: string;
+interface Hall {
+  name: string;
+  seats_num: BigInt;
 }
 
-const tableData = ref<Broadcast[]>([]);
+const tableData = ref<Hall[]>([]);
 
-const hall_names = ref([]);
-
-const addBroadcast = () => {
+const addHall = () => {
   const formData = new FormData();
   for (const key in form.value) {
     formData.append(key, form.value[key]);
   }
 
   axios
-      .post(`/broadcast/create/${movie_name.value}/`, formData)
+      .post('/hall/create/', formData)
       .then((res) => {
         if (res.data.errno === 0) {
           ElMessage.success('添加成功');
           tableData.value.push(res.data.data);
           dialogTableVisible.value = false
         } else {
-          form.value.beginTime = ''
-          form.value.endTime = ''
+          if (res.data.errno === 1) ElMessage.error('场馆名不能为空');
+          else if (res.data.errno === 2) ElMessage.error('添加失败(已有该场馆)');
+          form.value.name = ''
+          form.value.seats_num = 0
         }
       })
       .catch((error) => {
@@ -201,14 +150,14 @@ const addBroadcast = () => {
       });
 }
 
-const updateBroadcast = () => {
-  const id = tableData.value[curIndex.value].id
+const updateHall = () => {
+  const old_name = tableData.value[curIndex.value].name
   const formData = new FormData();
   for (const key in form.value) {
     formData.append(key, form.value[key]);
   }
   axios
-      .post(`/broadcast/update/${id}/`, formData)
+      .post(`/hall/update/${old_name}/`, formData)
       .then((res) => {
         if (res.data.errno === 0) {
           ElMessage.success('修改成功');
@@ -216,14 +165,28 @@ const updateBroadcast = () => {
           tableData.value.splice(curIndex.value + 1, 1);
           dialogTableVisible1.value = false
         } else {
-          form.value.beginTime = ''
-          form.value.endTime = ''
+          if (res.data.errno === 1) ElMessage.error('场馆名不能为空');
+          else if (res.data.errno === 2) ElMessage.error('修改失败(场馆名重复)');
+          form.value.name = ''
+          form.value.seats_num = 0
         }
       })
       .catch((error) => {
         console.error(error);
         ElMessage.error('系统错误');
       });
+}
+
+// 在组件加载时获取数据
+onMounted(fetchData);
+
+async function fetchData() {
+  try {
+    const response = await axios.get('/hall/index');
+    tableData.value = response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 }
 
 const updateRow = (index: number) => {
@@ -234,7 +197,7 @@ const updateRow = (index: number) => {
 
 const deleteRow = (index: number) => {
   ElMessageBox.confirm(
-      '该操作会删除当前电影，确认吗',
+      '该操作会删除当前场馆，确认吗',
       '警告',
       {
         confirmButtonText: '确定',
@@ -243,11 +206,10 @@ const deleteRow = (index: number) => {
       }
   )
       .then(() => {
-        const id = tableData.value[index].id;
+        const name = tableData.value[index].name;
         axios
-            .post(`/broadcast/delete/${id}/`)
+            .post("/hall/delete/", {name: name})
             .then((res) => {
-              console.log(res)
               if (res.data.errno === 0) {
                 ElMessage.success('删除成功');
                 tableData.value.splice(index, 1);
@@ -265,3 +227,4 @@ const deleteRow = (index: number) => {
 }
 
 </script>
+

@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'user',
     'movie',
     'broadcast',
-    'ticket'
+    'ticket',
+    'hall'
 ]
 
 CORS_ALLOW_CREDENTIALS = True

@@ -9,6 +9,10 @@ const toAdminMovies = () => {
 const toAdminUsers = () => {
   route.push('/admin/users')
 }
+
+const toAdminHalls = () => {
+  route.push('/admin/halls')
+}
 </script>
 
 <template>
@@ -21,6 +25,7 @@ const toAdminUsers = () => {
         <div style="text-align: center; margin-top: 200px">
           <el-button id="button" round @click="toAdminMovies">管理电影</el-button>
           <el-button id="button" round @click="toAdminUsers">管理用户</el-button>
+          <el-button id="button" round @click="toAdminHalls">管理场馆</el-button>
         </div>
       </el-main>
     </el-container>
