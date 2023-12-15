@@ -258,7 +258,7 @@ function onContentChange() {
           disabled
           show-score
           text-color="#ff9900"
-          score-template="{value} points"
+          score-template="{value} 分"
       />
     </div>
     <div v-else style="text-align: center; color: gray">暂无评分</div>
@@ -327,16 +327,22 @@ function onContentChange() {
       />
       <el-input
           v-model="content"
+          autosize
+          type="textarea"
           placeholder="请输入评论内容"
           @change="onContentChange"
       />
-      <el-button style="margin-top: 14px;" type="primary" @click="onSubmit">提交评论</el-button>
+      <el-button style="margin-top: 14px;" type="success" @click="onSubmit">提交评论</el-button>
 
       <div class="comments" style="margin-top: 30px">
+        <span style="margin: 20px 0 30px 0; font-size: 0.6cm;"><strong>全部评论</strong></span>
+        <span style="margin-left: 30px; font-size: 0.3cm; color: gray">{{comments.length}}</span>
+        <div style="margin-bottom: 10px">&nbsp;</div>
         <div class="comment" v-for="comment in comments" :key="comment.id">
           <span style="font-size: 0.5cm;"><strong>{{ comment.username }}</strong></span>
           <span style="font-size: 0.25cm; color: gray; margin-left: 100px">{{ comment.time }}<br/></span>
-          <div style="margin-top: 5px; font-size: 0.3cm">评分：{{ comment.rating }}<br/></div>
+          <div v-if="comment.rating > 0" style="margin-top: 5px; font-size: 0.3cm">评分：{{ comment.rating }}<br/></div>
+          <div v-else style="margin-top: 5px; font-size: 0.3cm">该用户暂未评分</div>
           <div style="margin-top: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.content }}<br/></div>
           <el-divider />
         </div>
