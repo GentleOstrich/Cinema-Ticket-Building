@@ -116,7 +116,7 @@ def update(request,old_name):
     if request.method == 'POST':
         data = {key: request.POST[key] for key in request.POST}
         movie = models.Movie.objects.get(name=old_name)
-        if data.get('name') != "" and models.Movie.objects.filter(name=data.get('name')).exists:
+        if data.get('name') != "" and data.get('name') != old_name and models.Movie.objects.filter(name=data.get('name')).exists():
             return JsonResponse({'errno': 2, 'msg': 'Repeated name'})
         elif movie is not None:
             image = request.FILES.get('image')
