@@ -189,7 +189,7 @@ function onSubmit() {
     if (response.data.errno === 0) {
       comments.value.push(response.data.data);
       total_score.value += comment_form.value.rating; 
-      total_num.value += 1;
+      if(comment_form.value.rating !== 0) total_num.value += 1;
       score.value = total_score.value*1.0/total_num.value;
       score.value = Number(score.value.toFixed(2));
       ElMessage.success('评论成功');
