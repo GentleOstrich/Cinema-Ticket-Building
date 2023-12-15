@@ -323,6 +323,7 @@ function onContentChange() {
           :max="5"
           show-score
           show-text
+          clearable
           @change="onRatingChange"
       />
       <el-input
