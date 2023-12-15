@@ -12,8 +12,10 @@ let movie_image = ref('')
 const goBack = () => {
   router.back()
 }
+
+const total_score = ref(0.0)
+const total_num = ref(0)
 const score = ref(0.0)
-const myScore = score.value.toFixed()
 
 const addFavorite = () => {
   axios
@@ -95,7 +97,9 @@ async function fetchBroadcast() {
     broadcasts.value = response.data.data;
     comments.value = response2.data.data;
     movie.value = response3.data.data;
-    score.value = response4.data.score;
+    total_score.value = response4.data.total_score;
+    total_num.value = response4.data.total_num;
+    score.value = total_score.value*1.0/total_num.value;
     score.value = Number(score.value.toFixed(2));
     isFavorite.value = response1.data.code !== 0;
     fullscreenLoading.value = false;
@@ -154,9 +158,17 @@ const form = ref({
   seats: ''
 })
 
+interface Comment {
+  id: BigInt;
+  username: string;
+  time: string;
+  content: string;
+  rating: BigInt;
+}
+
 const rating = ref(0);
 const content = ref("");
-const comments = ref([]);
+const comments = ref<Comment[]>([]);
 
 const comment_form = ref({
   content: '',
@@ -169,28 +181,30 @@ function onSubmit() {
   for (const key in comment_form.value) {
     formData.append(key, comment_form.value[key])
   }
-  console.log(comment_form.value)
+  fullscreenLoading.value = true;
   // 发送评论数据
-  axios.post(`/comment/create/${movie_name.value}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-  ).then((response) => {
+  axios
+    .post(`/comment/create/${movie_name.value}/`, formData)
+    .then((response) => {
     if (response.data.errno === 0) {
-      ElMessage.success('评论成功')
+      comments.value.push(response.data.data);
+      total_score.value += comment_form.value.rating; 
+      total_num.value += 1;
+      score.value = total_score.value*1.0/total_num.value;
+      score.value = Number(score.value.toFixed(2));
+      ElMessage.success('评论成功');
     } else {
       ElMessage.success('评论失败')
       comment_form.value.content = ''
       comment_form.value.rating = 0
     }
+    fullscreenLoading.value = false;
     // 评论提交成功
   }).catch((error) => {
     // 评论提交失败
     console.error(error);
     ElMessage.error('系统错误');
   });
-  window.location.reload();
 }
 
 function onRatingChange() {

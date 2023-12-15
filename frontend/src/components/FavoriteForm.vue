@@ -1,8 +1,7 @@
 <template>
-
   <div v-if="movies.length > 0">
     <!-- 卡片风格 -->
-    <el-row justify="start" :gutter="20" style="margin: 20px">
+    <el-row v-loading.fullscreen.lock="fullscreenLoading" justify="start" :gutter="20" style="margin: 20px">
     <el-col
         v-for="movie in movies"
         :span="4"
@@ -30,7 +29,7 @@
   </el-row>
   </div>
   <div v-else style="text-align: center">
-    <el-empty description="抱歉，当前尚未收藏电影">
+    <el-empty v-loading.fullscreen.lock="fullscreenLoading" description="抱歉，当前尚未收藏电影">
             <router-link to="/movies/index">
               <el-button type="primary">前往首页</el-button>
             </router-link>
@@ -43,15 +42,20 @@ import {ref,onMounted} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
 import axios from "axios";
 
+const fullscreenLoading = ref(true);
+
 const now = new Date()
 // 在组件加载时获取数据
 onMounted(fetchData);
 
 async function fetchData() {
   try {
+    fullscreenLoading.value = true;
     const response = await axios.get('/favorite/index/');
     movies.value = response.data.data;
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }

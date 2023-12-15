@@ -1,5 +1,5 @@
 <template>
- <el-table :data="tableData" style="width: 10000px; margin-left: 20px;" table-layout="fixed">
+ <el-table v-loading.fullscreen.lock="fullscreenLoading" :data="tableData" style="width: 10000px; margin-left: 20px;" table-layout="fixed">
     <el-table-column prop="movie_name" label="电影名" width="300" />
     <el-table-column prop="beginTime" label="开始时间" width="200" />
     <el-table-column prop="endTime" label="结束时间" width="200" />
@@ -26,15 +26,20 @@ import {ref,onMounted} from 'vue'
 import {ElMessage, ElMessageBox} from "element-plus";
 import axios from "axios";
 
+const fullscreenLoading = ref(true);
+
 const now = new Date()
 // 在组件加载时获取数据
 onMounted(fetchData);
 
 async function fetchData() {
   try {
+    fullscreenLoading.value = true;
     const response = await axios.get('/ticket/index/');
     tableData.value = response.data.data;
+    fullscreenLoading.value = false;
   } catch (error) {
+    fullscreenLoading.value = false;
     console.error('Error fetching data:', error);
   }
 }
