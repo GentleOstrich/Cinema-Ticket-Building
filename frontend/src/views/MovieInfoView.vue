@@ -293,12 +293,12 @@ function onContentChange() {
             v-for="broadcast in broadcasts"
             :span="6"
             style="flex: auto">
-          <el-card style="height: 150px; margin: 30px 0 30px 0">
-            <el-text>场馆名：{{ broadcast.hall_name }}<br/></el-text>
-            <el-text>开始时间：{{ broadcast.beginTime }}<br/></el-text>
-            <el-text>结束时间：{{ broadcast.endTime }}</el-text>
-            <el-text style="margin-left: 60px; color:orangered; font-size: 0.5cm">￥{{ broadcast.price }}<br/></el-text>
-            <el-button type="success" style="margin-left: 100px; margin-top: 10px"
+          <el-card style="height: 165px; margin: 30px 0 30px 0">
+            <el-text style="margin-bottom: 5px">场馆名：{{ broadcast.hall_name }}<br/></el-text>
+            <el-text style="margin-bottom: 5px">开始时间：{{ broadcast.beginTime }}<br/></el-text>
+            <el-text style="margin-bottom: 5px">结束时间：{{ broadcast.endTime }}<br/></el-text>
+            <el-text style="color:orangered; font-size: 0.5cm; margin-left: 200px">￥{{ broadcast.price }}<br/></el-text>
+            <el-button type="success" style="margin-left: 100px; margin-top: 5px"
                        @click="ifshow=!ifshow, aim_broadcast=broadcast">
               订票
             </el-button>

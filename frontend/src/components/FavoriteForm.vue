@@ -28,10 +28,10 @@
     </el-col>
   </el-row>
   </div>
-  <div v-else style="text-align: center">
+  <div v-else style="text-align: center; margin-top: 50px">
     <el-empty v-loading.fullscreen.lock="fullscreenLoading" description="抱歉，当前尚未收藏电影">
             <router-link to="/movies/index">
-              <el-button type="primary">前往首页</el-button>
+              <el-button type="primary" style="margin-top: 30px">前往首页</el-button>
             </router-link>
           </el-empty>
         </div>
