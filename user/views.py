@@ -124,6 +124,7 @@ def update(request):
         if email != '':
             user.email = email
         user.save()
+        auth.login(request, user)
         return JsonResponse({'errno': 0, 'msg': "Update Success"})
     else:
         return JsonResponse({'errno': 2, 'msg': "Wrong Request"})
